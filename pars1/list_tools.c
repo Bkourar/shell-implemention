@@ -7,7 +7,17 @@ t_word	*ft_lstnew(char *content)
 	n_node = malloc(sizeof(t_word));
 	if (!n_node)
 		return (NULL);
-	n_node->value = content;
+	n_node->token = content;
+	if (!(strcmp("|", n_node->token)))
+		n_node->type = strdup("pipe");
+	else
+	{
+		printf("2024\n");
+		n_node->type = strdup("word");
+	}
+	n_node->stat = strdup("genral");
+	if (!n_node->stat || !n_node->type)
+		return (NULL);
 	n_node->next = NULL;
 	return (n_node);
 }

@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <readline/readline.h>
@@ -9,11 +10,11 @@
 
 typedef struct word
 {
-	char				*token;
-	char				*type;
-	char				*stat;
-	struct word		*next;
-}					t_word;
+	char		*token;
+	char		*type;
+	char		*stat;
+	struct word	*next;
+}				t_word;
 
 typedef struct command_line
 {
@@ -27,7 +28,9 @@ typedef struct command_line
 
 /*############      parsing      ############ */
 char	**ft_split(char const *s, char c);
-t_word *pars_word(t_word *node, char const *str);
+t_word	*pars_pipe(char const *str);
+int		parse_line(char *line);
+
 
 /*############      list      ############ */
 void	ft_lstadd_back(t_word **lst, t_word *new);
@@ -41,9 +44,12 @@ int		ft_lstsize(t_word *lst);
 void	ft_add_back(t_sh **lst, t_sh *new);
 t_sh	*ft_shell_last(t_sh **lst);
 t_sh	*create_commands(char **words);
-int		parse_line(char *line);
-t_sh	*create_commands(char **words);
 t_sh	*parse_commands_1(char const *string);
 t_sh	*parse_commands_2(t_sh **list, char const *string);
+
+/*############ pars word ##############*/
+t_word	*parse_word_2(t_word **list, char const *string);
+t_word	*pars_word(char const *str);
+t_word	*parse_word_1(char const *string);
 
 #endif

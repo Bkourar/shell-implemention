@@ -15,6 +15,18 @@
 // 	return (1);
 // }
 
+t_sh	*ft_shell_last(t_sh **lst)
+{
+	t_sh	*tmp;
+
+	if (!lst)
+		return (NULL);
+	tmp = *lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
+}
+
 t_sh	*parse_commands_2(t_sh **list, char const *string)
 {
 	t_sh	*new = (*list);
@@ -29,17 +41,20 @@ t_sh	*parse_commands_2(t_sh **list, char const *string)
 		new->type = strdup("append");
 	else if (!strcmp("|", string))
 		new->type = strdup("pipe");
-	else if (!strcmp("'", string))
-		new->type = strdup("s_t");
-	else if (!strcmp("\"", string))
-		new->type = strdup("d_quot");
+	else if (!strcmp("\"", string) || !strcmp("'", string))
+	{
+		if (!strcmp("\"", string))
+			new->type = strdup("d_quot");
+		else
+			new->type = strdup("s_quot");
+		new->stat = strdup("spicial");
+	}
 	else if (!strcmp("$", string))
 		new->type = strdup("dolar");
 	else
 	{
-		new->word->token = strdup(string);
-		if (!new->word->token || pars_word(new, string))
-			return (NULL);
+		puts("hellodslbfdsl\n");
+		new->word = pars_word(string);
 	}
 	return (new);
 }
@@ -53,10 +68,10 @@ t_sh	*parse_commands_1(char const *string)
 		return (NULL);
 	new->token = strdup(string);
 	if (new->token == NULL)
-		(write(2, "error in allocation", 20), exit(1));
+		(write(2, "error in allocation", 20), exit(4));
 	new->stat = strdup("genral");
 	if (new->token == NULL)
-		(write(2, "error in allocation", 20), exit(1));
+		(write(2, "error in allocation", 20), exit(4));
 	new = parse_commands_2(&new, string);
 	if (!new)
 		return (NULL);
@@ -75,6 +90,8 @@ t_sh	*create_commands(char **words)
 	while (words[++i])
 	{
 		node = parse_commands_1(words[i]);
+		if (!node)
+			return (puts("1"), NULL);
 		ft_add_back(&head, node);
 	}
 	return (head);
@@ -90,10 +107,13 @@ int parse_line(char *line)
 		return (1);
 	tok = create_commands(shell_line);
 	if (!tok)
-		return (1);
+		return (puts("heloo"), 1);
 	// printf("%s : %s\n",  tok->token, tok->type);
 	for (t_sh *tmp = tok; tmp != NULL; tmp = tmp->next)
-		printf("{%s} : [%s] : next-> \n", tmp->token, tmp->type);
+		printf("{%s} : [%s] : (%s) : next-> \n", tmp->token, tmp->type, tmp->stat);
+	// puts("here spical for word");
+	for (t_word *tmp = tok->word; tmp != NULL; tmp = tmp->next)
+		printf("{%s} : [%s] : (%s) : next-> \n", tmp->token, tmp->type, tmp->stat);
 	return (0);
 }
 
