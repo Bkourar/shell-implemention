@@ -1,7 +1,7 @@
 NAME = minishell
 
-SRC_FILES = main.c syntax_errors.c pars_it.c list_tools.c ft_split.c
-
+SRC_FILES = main.c pars_word.c list_tools.c ft_split.c pars_command.c
+ 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 CC = cc

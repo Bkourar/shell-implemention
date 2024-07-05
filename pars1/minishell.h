@@ -1,12 +1,12 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 
 typedef struct word
 {

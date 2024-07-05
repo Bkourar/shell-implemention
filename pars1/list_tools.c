@@ -2,6 +2,7 @@
 
 t_word	*ft_lstnew(char *content)
 {
+	static int i;
 	t_word	*n_node;
 
 	n_node = malloc(sizeof(t_word));
@@ -11,14 +12,19 @@ t_word	*ft_lstnew(char *content)
 	if (!(strcmp("|", n_node->token)))
 		n_node->type = strdup("pipe");
 	else
-	{
-		printf("2024\n");
 		n_node->type = strdup("word");
-	}
 	n_node->stat = strdup("genral");
 	if (!n_node->stat || !n_node->type)
 		return (NULL);
 	n_node->next = NULL;
+	if (i == 11)
+	{
+		puts("1234567");
+		puts(n_node->token);
+		puts(n_node->stat);
+		puts(n_node->type);
+	}
+	i++;
 	return (n_node);
 }
 

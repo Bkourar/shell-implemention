@@ -73,8 +73,8 @@ t_word *pars_pipe(char const *str)
 	char 	*tmp;
 
 	i = 0;
-	h = (t_word *)malloc(sizeof(t_word));
-	while(str[i] && h != NULL)
+	h = NULL;
+	while(str[i])
 	{
 		j = 0;
 		len = 0;
@@ -97,10 +97,6 @@ t_word *pars_word(char const *str)
 {
 	t_word	*node = NULL;
 
-	// node->stat = strdup("genral");
-	// node->type = strdup("word");
-	// if (!node->stat || !node->stat)
-	// 	return (NULL);
 	node = pars_pipe(str);
 	if (!node)
 		return (NULL);
