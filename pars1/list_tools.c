@@ -1,36 +1,20 @@
 #include "minishell.h"
 
-t_word	*ft_lstnew(char *content)
+t_sh	*ft_lstnew(char *content)
 {
-	static int i;
-	t_word	*n_node;
+	t_sh	*n_node;
 
-	n_node = malloc(sizeof(t_word));
+	n_node = (t_sh *)malloc(sizeof(t_sh));
 	if (!n_node)
 		return (NULL);
-	n_node->token = content;
-	if (!(strcmp("|", n_node->token)))
-		n_node->type = strdup("pipe");
-	else
-		n_node->type = strdup("word");
-	n_node->stat = strdup("genral");
-	if (!n_node->stat || !n_node->type)
-		return (NULL);
+	n_node->token = strdup(content);
 	n_node->next = NULL;
-	if (i == 11)
-	{
-		puts("1234567");
-		puts(n_node->token);
-		puts(n_node->stat);
-		puts(n_node->type);
-	}
-	i++;
 	return (n_node);
 }
 
-void	ft_lstadd_back(t_word **lst, t_word *new)
+void	ft_lstadd_back(t_sh **lst, t_sh *new)
 {
-	t_word	*temp;
+	t_sh	*temp;
 
 	if (!(*lst))
 	{
@@ -43,7 +27,7 @@ void	ft_lstadd_back(t_word **lst, t_word *new)
 	temp->next = new;
 }
 
-void	ft_lstadd_front(t_word **lst, t_word *new)
+void	ft_lstadd_front(t_sh **lst, t_sh *new)
 {
 	if (!lst || !new)
 		return ;
@@ -51,10 +35,10 @@ void	ft_lstadd_front(t_word **lst, t_word *new)
 	*lst = new;
 }
 
-int	ft_lstsize(t_word *lst)
+int	ft_lstsize(t_sh *lst)
 {
 	int		i;
-	t_word	*node;
+	t_sh	*node;
 
 	node = lst;
 	i = 0;
@@ -66,9 +50,9 @@ int	ft_lstsize(t_word *lst)
 	return (i);
 }
 
-t_word	*ft_lstlast(t_word **lst)
+t_sh	*ft_lstlast(t_sh **lst)
 {
-	t_word	*tmp;
+	t_sh	*tmp;
 
 	if (!lst)
 		return (NULL);

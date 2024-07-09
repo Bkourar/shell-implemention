@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	count_word(char const *string, char c)
+int	count_sh(char const *string, char c)
 {
 	int	count_w;
 	int	i;
@@ -40,7 +40,7 @@ static char	**dynamic(char const *src, char c)
 
 	if (!src)
 		return (NULL);
-	count = count_word(src, c) + 1;
+	count = count_sh(src, c) + 1;
 	str = (char **) malloc (count * sizeof(char *));
 	if (!str)
 		return (NULL);
@@ -67,7 +67,7 @@ char	**ft_split(char const *s, char c)
 		return (NULL);
 	i = 0;
 	k = -1;
-	while (++k < count_word(s, c))
+	while (++k < count_sh(s, c))
 	{
 		j = 0;
 		str[k] = (char *)malloc((len_strings(&s[i], c) + 1) * sizeof(char));

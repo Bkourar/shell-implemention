@@ -8,48 +8,39 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-typedef struct word
-{
-	char		*token;
-	char		*type;
-	char		*stat;
-	struct word	*next;
-}				t_word;
+// enum	type{word, pipe, input, output, heredoc,
+// append, d_quot, s_quot, dolar};
 
 typedef struct command_line
 {
 	char				*token;
 	char				*type;
 	char				*stat;
-	t_word				*word;
 	struct command_line	*next;
 }						t_sh;
 
-
 /*############      parsing      ############ */
 char	**ft_split(char const *s, char c);
-t_word	*pars_pipe(char const *str);
 int		parse_line(char *line);
 
-
 /*############      list      ############ */
-void	ft_lstadd_back(t_word **lst, t_word *new);
-void	ft_lstadd_front(t_word **lst, t_word *new);
-t_word	*ft_lstnew(char *content);
-t_word	*ft_lstlast(t_word **lst);
-int		ft_lstsize(t_word *lst);
+void	ft_lstadd_back(t_sh **lst, t_sh *new);
+void	ft_lstadd_front(t_sh **lst, t_sh *new);
+t_sh	*ft_lstnew(char *content);
+t_sh	*ft_lstlast(t_sh **lst);
+int		ft_lstsize(t_sh *lst);
 
 /*############ pars command ##############*/
-
-void	ft_add_back(t_sh **lst, t_sh *new);
 t_sh	*ft_shell_last(t_sh **lst);
 t_sh	*create_commands(char **words);
 t_sh	*parse_commands_1(char const *string);
 t_sh	*parse_commands_2(t_sh **list, char const *string);
 
 /*############ pars word ##############*/
-t_word	*parse_word_2(t_word **list, char const *string);
-t_word	*pars_word(char const *str);
-t_word	*parse_word_1(char const *string);
+void	pars_word(char *input, t_sh **l);
+
+/*############    checker    ##############*/
+int check_op(char c);
+void	free_linked(t_sh **likend);
 
 #endif

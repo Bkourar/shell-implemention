@@ -1,104 +1,108 @@
-
 #include "minishell.h"
 
-void	ft_add_back(t_sh **lst, t_sh *new)
+void	up_grade(t_sh **n, char *string)
 {
-	t_sh	*temp;
-
-	if (!(*lst))
-	{
-		*lst = new;
-		return ;
-	}
-	temp = *lst;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new;
-}
-
-t_word	*parse_word_2(t_word **list, char const *string)
-{
-	t_word	*new = (*list);
-
-	if (!strcmp("<", string))
-		new->type = strdup("input");
-	else if (!strcmp(">", string))
-		new->type = strdup("output");
-	else if (!strcmp("<<", string))
-		new->type = strdup("heredoc");
+	if (!strcmp("<<", string))
+		(*n)->type = strdup("heredoc");
 	else if (!strcmp(">>", string))
-		new->type = strdup("append");
-	else if (!strcmp("|", string))
-		new->type = strdup("pipe");
+		(*n)->type = strdup("append");
+	else if (!strcmp("<", string))
+		(*n)->type = strdup("input");
+	else if (!strcmp(">", string))
+		(*n)->type = strdup("output");
 	else if (!strcmp("\"", string) || !strcmp("'", string))
 	{
 		if (!strcmp("\"", string))
-			new->type = strdup("d_quot");
+			(*n)->type = strdup("d_quot");
 		else
-			new->type = strdup("s_quot");
-		new->stat = strdup("spicial");
+			(*n)->type = strdup("s_quot");
+		(free((*n)->stat), (*n)->stat = strdup("spicial"));
 	}
 	else if (!strcmp("$", string))
-		new->type = strdup("dolar");
+		(*n)->type = strdup("dolar");
+	else if (!strcmp("|", string))
+		(*n)->type = strdup("pipe");
 	else
-		new->type = strdup("word");
-	return (new);
+		(*n)->type = strdup("word");
 }
 
-t_word	*parse_word_1(char const *string)
+void up_date(char *str, t_sh **lst)
 {
-	t_word	*new;
+	t_sh	*node;
 
-	new = (t_word *)malloc(sizeof(t_word));
-	if (!new)
-		return (NULL);
-	new->token = strdup(string);
-	if (new->token == NULL)
+	node =  ft_lstnew(str);
+	node->stat = strdup("general");
+	if (!node->stat)
 		(write(2, "error in allocation", 20), exit(1));
-	new->stat = strdup("genral");
-	if (new->token == NULL)
+	up_grade(&node, str);
+	if (!node || !node->token || !node->type)
 		(write(2, "error in allocation", 20), exit(1));
-	new = parse_word_2(&new, string);
-	if (!new ||!new->type || !new->token)
-		return (NULL);
-	return (new->next = NULL, new);
+	ft_lstadd_back(&(*lst), node);
 }
 
-t_word *pars_pipe(char const *str)
+void	take_str(char *string, int *i, t_sh **node)
 {
-	t_word *h;
+	if (!strcmp("<<", string))
+		up_date(string, node), *i += 2;
+	else if (!strcmp(">>", string))
+		up_date(string, node), *i += 2;
+	else if (!strcmp("<", string))
+		up_date(string, node), *i += 1;
+	else if (!strcmp(">", string))
+		up_date(string, node), *i += 1;
+	else if (!strcmp("\"", string))
+		up_date(string, node), *i += 1;
+	else if (!strcmp("'", string))
+		up_date(string, node), *i += 1;
+	else if (!strcmp("$", string))
+		up_date(string, node), *i += 1;
+	else if (!strcmp("|", string))
+		up_date(string, node), *i += 1;
+	else
+	{
+		up_date(string, node);
+		*i += strlen(string);
+	}
+}
+
+char	*get_word(char	*str)
+{
 	int		i;
-	int		j;
-	int		len;
-	char 	*tmp;
+	char	stock[255];
 
 	i = 0;
-	h = NULL;
-	while(str[i])
+	while (check_op(str[i]) && str[i])
 	{
-		j = 0;
-		len = 0;
-		while(str[i + len] != '|' && str[i + len])
-			len++;
-		tmp = (char *)malloc(len + 1);
-		while(str[i] != '|' && str[i])
-			tmp[j++] = str[i++];
-		(tmp[j] = '\0', ft_lstadd_back(&h, ft_lstnew(tmp)));
-		if(str[i] == '|')
-		{
-			ft_lstadd_back(&h, ft_lstnew("|"));
-			 i++;
-		}
+		stock[i] = str[i];
+		i++;
 	}
-	return (h);
+	stock[i] = '\0';
+	return (strdup(stock));
 }
 
-t_word *pars_word(char const *str)
+void	pars_word(char *input, t_sh **l)
 {
-	t_word	*node = NULL;
+	int		i = 0;
 
-	node = pars_pipe(str);
-	if (!node)
-		return (NULL);
-	return (node);
+	while (input[i])
+	{
+		if (input[i] == '<' && input[i + 1] == '<')
+			take_str(strdup("<<"), &i, l);
+		else if (input[i] == '>' && input[i + 1] == '>')
+			take_str(strdup(">>"), &i, l);
+		else if (input[i] == '<')
+			take_str(strdup("<"), &i, l);
+		else if (input[i] == '>')
+			take_str(strdup(">"), &i, l);
+		else if (input[i] == '|')
+			take_str(strdup("|"), &i, l);
+		else if (input[i] == '\"')
+			take_str(strdup("\""), &i, l);
+		else if (input[i] == '\'')
+			take_str(strdup("'"), &i, l);
+		else if (input[i] == '$')
+			take_str(strdup("$"), &i, l);
+		else
+			take_str(get_word(&input[i]), &i, l);
+	}
 }
