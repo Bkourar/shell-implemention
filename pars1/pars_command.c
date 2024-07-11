@@ -39,27 +39,27 @@ t_sh	*parse_commands_2(t_sh **list, char const *string)
 	return (n);
 }
 
-t_sh	*parse_commands_1(char const *string)
+t_sh	*parse_commands_1(char const *st)
 {
 	t_sh	*new;
 
 	new = NULL;
-	if (!check_op(string[0]))
+	if (!check_op(st[0]) && (st[1] == '\0' || st[2] == '\0'))
 	{
 		new = (t_sh *)malloc(sizeof(t_sh));
 		if (!new)
 			return(NULL);
-		new->token = strdup(string);
+		new->token = strdup(st);
 		new->stat = strdup("genral");
 		if (new->token == NULL || new->stat == NULL)
 			(write(2, "error in allocation", 20), exit(1));
-		new = parse_commands_2(&new, string);
+		new = parse_commands_2(&new, st);
 		if (!new ||!new->type)
 			return (NULL);
 		new->next = NULL;
 	}
 	else
-		pars_word((char *)string, &new);
+		pars_word((char *)st, &new);
 	return (new);
 }
 
@@ -71,13 +71,14 @@ t_sh	*create_commands(char **words)
 
 	head = NULL;
 	node = NULL;
-	i = -1;
-	while (words[++i])
+	i = 0;
+	while (words[i])
 	{
 		node = parse_commands_1(words[i]);
 		if (!node)
-			return (puts("333"), NULL);
+			return (printf("%d", i), NULL);
 		ft_lstadd_back(&head, node);
+		i++;
 	}
 	return (head);
 }
