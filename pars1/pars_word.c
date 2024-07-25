@@ -3,27 +3,27 @@
 void	up_grade(t_sh **n, char *string)
 {
 	if (!strcmp("<<", string))
-		(*n)->type = strdup("heredoc");
+		(*n)->type = heredoc;
 	else if (!strcmp(">>", string))
-		(*n)->type = strdup("append");
+		(*n)->type = append;
 	else if (!strcmp("<", string))
-		(*n)->type = strdup("input");
+		(*n)->type = input;
 	else if (!strcmp(">", string))
-		(*n)->type = strdup("output");
+		(*n)->type = output;
 	else if (!strcmp("\"", string) || !strcmp("'", string))
 	{
 		if (!strcmp("\"", string))
-			(*n)->type = strdup("d_quot");
+			(*n)->type = d_quot;
 		else
-			(*n)->type = strdup("s_quot");
+			(*n)->type = s_quot;
 		(free((*n)->stat), (*n)->stat = strdup("spicial"));
 	}
 	else if (!strcmp("$", string))
-		(*n)->type = strdup("dolar");
+		(*n)->type = dolar;
 	else if (!strcmp("|", string))
-		(*n)->type = strdup("pipe");
+		(*n)->type = Pipe;
 	else
-		(*n)->type = strdup("word");
+		(*n)->type = word;
 }
 
 void up_date(char *str, t_sh **lst)
@@ -35,7 +35,7 @@ void up_date(char *str, t_sh **lst)
 	if (!node->stat)
 		(write(2, "error in allocation", 20), exit(1));
 	up_grade(&node, str);
-	if (!node || !node->token || !node->type)
+	if (!node || !node->token)
 		(write(2, "error in allocation", 20), exit(1));
 	ft_lstadd_back(&(*lst), node);
 }

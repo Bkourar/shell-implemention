@@ -19,12 +19,14 @@ void	ft_lstadd_back(t_sh **lst, t_sh *new)
 	if (!(*lst))
 	{
 		*lst = new;
+		new->prev = NULL;
 		return ;
 	}
 	temp = *lst;
 	while (temp->next)
 		temp = temp->next;
 	temp->next = new;
+	new->prev = temp;
 }
 
 void	ft_lstadd_front(t_sh **lst, t_sh *new)
@@ -57,7 +59,11 @@ t_sh	*ft_lstlast(t_sh **lst)
 	if (!lst)
 		return (NULL);
 	tmp = *lst;
-	while (tmp->next)
+	while (tmp != NULL)
+	{
+		if (tmp->next == NULL)
+			break;
 		tmp = tmp->next;
+	}
 	return (tmp);
 }

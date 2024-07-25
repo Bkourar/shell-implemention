@@ -1,11 +1,11 @@
 NAME = minishell
 
-SRC_FILES = main.c pars_word.c list_tools.c ft_split.c pars_command.c free_likend.c
+SRC_FILES = main.c pars_word.c list_tools.c ft_split.c pars_command.c free_likend.c syntax_errors.c parsing.c
  
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -fsanitize=address -g -Wall -Werror -Wextra 
 
 %.o : %.c minishell.h
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -23,4 +23,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY: clean
+.PHONY: clean 
