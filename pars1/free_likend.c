@@ -1,28 +1,30 @@
 #include "minishell.h"
 
-// void	free_linked(t_sh **likend)
-// {
-// 	t_sh	*elem;
-// 	t_sh	*tmp;
+void	free_linked(t_sh **likend)
+{
+	t_sh	*elem;
+	t_sh	*tmp;
 
-// 	if (likend == NULL)
-// 		return ;
-// 	if (*likend == NULL)
-// 	{
-//         free((*likend)->token);
-// 		free(*likend);
-// 		return ;
-// 	}
-// 	elem = *likend;
-// 	while (elem->next != NULL)
-// 	{
-// 		tmp = elem->next;
-//         free(elem->token);
-// 		free(elem);
-// 		elem = tmp;
-// 	}
-// 	free(elem);
-// }
+	if (likend == NULL)
+		return ;
+	if (*likend == NULL)
+	{
+        free((*likend)->token);
+        free((*likend)->stat);
+		free(*likend);
+		return ;
+	}
+	elem = *likend;
+	while (elem->nx != NULL)
+	{
+		tmp = elem->nx;
+        free(elem->token);
+        free(elem->stat);
+		free(elem);
+		elem = tmp;
+	}
+	free(elem);
+}
 
 int check_op(char c)
 {
@@ -49,7 +51,7 @@ int	check_heredoc(t_sh **lst)
 	{
 		if (tp->type == heredoc)
 			i++;
-		tp = tp->next;
+		tp = tp->nx;
 	}
 	return (i);
 }
@@ -67,8 +69,8 @@ int	check_herepipe(t_sh **l)
 	{
 		if ((*l)->type == heredoc)
 			b1 = 1;
-		else if ((*l)->next != NULL && (*l)->type == Pipe 
-			&& (*l)->next->type == Pipe)
+		else if ((*l)->nx != NULL && (*l)->type == Pipe 
+			&& (*l)->nx->type == Pipe)
 			b2 = 1;
 		else if (check_op1((*l)->type) && check_op1((*l)->type))
 			b3 = 1;
@@ -78,7 +80,7 @@ int	check_herepipe(t_sh **l)
 			return (1);
 		else if(b3 == 1)
 			return (2);
-		(*l) = (*l)->next;
+		(*l) = (*l)->nx;
 	}
 	return (3);
 }
@@ -96,7 +98,7 @@ int	check_pos_here(t_sh **lst, t_sh **breaking)
 			i++;
 		if (l == *breaking)
 			return (i);
-		l = l->next;
+		l = l->nx;
 	}
 	return (0);
 }

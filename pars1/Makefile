@@ -1,13 +1,13 @@
 NAME = minishell
 
-SRC_FILES = main.c pars_word.c list_tools.c ft_split.c pars_command.c free_likend.c syntax_errors.c parsing.c
+SRC_FILES = main.c pars_word.c list_tools.c ft_split.c pars_command.c free_likend.c syntax_errors.c parsing.c parsing_argement.c
  
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 CC = cc
-CFLAGS = -fsanitize=address -g -Wall -Werror -Wextra 
+CFLAGS = -fsanitize=address -g -Wall -Werror -Wextra
 
-%.o : %.c minishell.h
+%.o : %.c minishell.h minishell1.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 all : $(NAME)

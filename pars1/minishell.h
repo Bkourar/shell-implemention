@@ -11,24 +11,26 @@
 
 
 typedef enum	type{word, Pipe, input, output, heredoc,
-append, d_quot, s_quot, dolar} ee;
+append, d_quot, s_quot, dolar, err} ee;
 
 typedef struct command_line
 {
 	char				*token;
-	ee					type;
 	char				*stat;
-	struct command_line	*next;
-	struct command_line *prev;
+	ee					type;
+	struct command_line	*nx;
+	struct command_line *pv;
 }						t_sh;
 
 /*############      parsing      ############ */
 char	**ft_split(char const *s, char c);
 void	pars_word(char *input, t_sh **l);
-t_sh	*parse_line(char *line);
+void	*parse_line(char *line);
 // 1 : processing parte
+void	pi_processing_err_3(t_sh **l, t_sh **ps, char c0, char c1);
 void	pi_processing_err_1(t_sh **f, t_sh **l);
-void	pi_processing_err_3(t_sh *f, int i);
+void	pi_processing_err_4(t_sh *f, int i);
+void	pi_processing_err_5(t_sh **lst);
 void	pi_processing_err_2(t_sh **f);
 t_sh	*pi_processing_cmd(t_sh **lst);
 
@@ -41,15 +43,12 @@ t_sh	*ft_shell_last(t_sh **lst);
 int		ft_lstsize(t_sh *lst);
 
 /*############ pars command ##############*/
-t_sh	*parse_commands_2(t_sh **list, char const *string);
+t_sh	*parse_commands_2(t_sh **n, char const *string);
 t_sh	*parse_commands_1(char const *string);
 t_sh	*create_commands(char **words);
 
 /*############    checker    ##############*/
 int		check_pos_here(t_sh **lst, t_sh **breaking);
-int		checker_whit_here(t_sh **vi, ee i, ee j);
-int		checker_not_here(t_sh **vi, ee i, ee j);
-int		ertor(t_sh **in);
 int		check_herepipe(t_sh **l);
 int		check_op(char c);
 int		check_op1(ee i);

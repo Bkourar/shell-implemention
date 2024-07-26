@@ -8,7 +8,7 @@ t_sh	*ft_lstnew(char *content)
 	if (!n_node)
 		return (NULL);
 	n_node->token = strdup(content);
-	n_node->next = NULL;
+	n_node->nx = NULL;
 	return (n_node);
 }
 
@@ -19,21 +19,21 @@ void	ft_lstadd_back(t_sh **lst, t_sh *new)
 	if (!(*lst))
 	{
 		*lst = new;
-		new->prev = NULL;
+		new->pv = NULL;
 		return ;
 	}
 	temp = *lst;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new;
-	new->prev = temp;
+	while (temp->nx)
+		temp = temp->nx;
+	temp->nx = new;
+	new->pv = temp;
 }
 
 void	ft_lstadd_front(t_sh **lst, t_sh *new)
 {
 	if (!lst || !new)
 		return ;
-	new->next = *lst;
+	new->nx = *lst;
 	*lst = new;
 }
 
@@ -47,7 +47,7 @@ int	ft_lstsize(t_sh *lst)
 	while (node != NULL)
 	{
 		i++;
-		node = node->next;
+		node = node->nx;
 	}
 	return (i);
 }
@@ -61,9 +61,9 @@ t_sh	*ft_lstlast(t_sh **lst)
 	tmp = *lst;
 	while (tmp != NULL)
 	{
-		if (tmp->next == NULL)
+		if (tmp->nx == NULL)
 			break;
-		tmp = tmp->next;
+		tmp = tmp->nx;
 	}
 	return (tmp);
 }

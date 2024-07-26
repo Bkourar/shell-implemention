@@ -1,4 +1,5 @@
 #include "minishell.h"
+// #include "minishell1.h"
 
 t_sh	*ft_shell_last(t_sh **lst)
 {
@@ -7,36 +8,38 @@ t_sh	*ft_shell_last(t_sh **lst)
 	if (!lst)
 		return (NULL);
 	tmp = *lst;
-	while (tmp->next)
-		tmp = tmp->next;
+	while (tmp->nx)
+		tmp = tmp->nx;
 	return (tmp);
 }
 
-t_sh	*parse_commands_2(t_sh **list, char const *string)
+t_sh	*parse_commands_2(t_sh **n, char const *string)
 {
-	t_sh	*n = (*list);
-
 	if (!strcmp("<", string))
-		n->type = input;
+		(*n)->type = input;
 	else if (!strcmp(">", string))
-		n->type = output;
+		(*n)->type = output;
 	else if (!strcmp("<<", string))
-		n->type = heredoc;
+		(*n)->type = heredoc;
 	else if (!strcmp(">>", string))
-		n->type = append;
+		(*n)->type = append;
+	else if (!strcmp("<>", string) || !strcmp("><", string) || !strcmp("|>", string) 
+		|| !strcmp("|<", string) || !strcmp(">|", string) || !strcmp("<|", string) 
+		|| !strcmp("||", string))
+		(*n)->type = err;
 	else if (!strcmp("|", string))
-		n->type = Pipe;
+		(*n)->type = Pipe;
 	else if (!strcmp("\"", string) || !strcmp("'", string))
 	{
 		if (!strcmp("\"", string))
-			n->type = d_quot;
+			(*n)->type = d_quot;
 		else
-			n->type = s_quot;
-		(free(n->stat), n->stat = strdup("spicial"));
+			(*n)->type = s_quot;
+		(free((*n)->stat), (*n)->stat = strdup("spicial"));
 	}
 	else if (!strcmp("$", string))
-		n->type = dolar;
-	return (n);
+		(*n)->type = dolar;
+	return (*n);
 }
 
 t_sh	*parse_commands_1(char const *st)
@@ -56,7 +59,7 @@ t_sh	*parse_commands_1(char const *st)
 		new = parse_commands_2(&new, st);
 		if (!new)
 			return (NULL);
-		new->next = NULL;
+		new->nx = NULL;
 	}
 	else
 		pars_word((char *)st, &new);
@@ -85,20 +88,22 @@ t_sh	*create_commands(char **words)
 	return (head);
 }
 
-t_sh	*parse_line(char *line)
+void	*parse_line(char *line)
 {
 	char	**shell_line;
 	t_sh	*tok;
+	// m_sh	*tok;
 
 	shell_line = ft_split(line, ' ');
 	tok = create_commands(shell_line);
 	if (!tok)
 		return (NULL);
 	tok = pi_processing_cmd(&tok);
-	// for (t_sh *tmp = ft_lstlast(&tok); tmp != NULL; tmp = tmp->prev)
+	// for (t_sh *tmp = ft_lstlast(&tok); tmp != NULL; tmp = tmp->pv)
 	// {
 	// 	printf("token [%s] --- type [%u] --- stat [%s]\n", tmp->token, tmp->type, tmp->stat);
 	// }
+	free_linked(&tok);
+	puts("argement valid");
 	exit(0);//scsses programe
-	return (tok);
 }

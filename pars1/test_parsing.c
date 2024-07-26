@@ -11,7 +11,7 @@ typedef struct command_line
 	char				*token;
 	char				*type;
 	char				*stat;
-	struct command_line	*next;
+	struct command_line	*nx;
 }						t_s;
 
 
@@ -41,7 +41,7 @@ t_s	*ft_lstnew(char *content)
 	if (!n_node)
 		return (NULL);
 	n_node->token = strdup(content);
-	n_node->next = NULL;
+	n_node->nx = NULL;
 	return (n_node);
 }
 
@@ -55,9 +55,9 @@ void	ft_lstadd_back(t_s **lst, t_s *new)
 		return ;
 	}
 	temp = *lst;
-	while (temp->next)
-		temp = temp->next;
-	temp->next = new;
+	while (temp->nx)
+		temp = temp->nx;
+	temp->nx = new;
 }
 
 void	up_grade(t_s **n, char *string)
@@ -101,7 +101,7 @@ void	up_date(char *str)
 	if (!head || !head->token || !head->type)
 	(write(2, "error in allocation", 20), exit(1));
 	ft_lstadd_back(&get_data(NULL)->cmds, head);
-	// for (t_s *tmp = head; tmp != NULL; tmp = tmp->next)
+	// for (t_s *tmp = head; tmp != NULL; tmp = tmp->nx)
 	// {
 	// 	printf("token [%s] ---- type [%s] ---- stat [%s]\n", tmp->token, tmp->type, tmp->stat);
 	// }
@@ -198,7 +198,7 @@ int main(int ac, char **av)
 	{
 		input = readline("\033[0;32m bash-1.$ \033[0;37m");
 		pars(input);
-		for (t_s *tmp = data.cmds; tmp != NULL; tmp = tmp->next)
+		for (t_s *tmp = data.cmds; tmp != NULL; tmp = tmp->nx)
 		{
 			printf("token [%s] ---- type [%s] ---- stat [%s]\n", tmp->token, tmp->type, tmp->stat);
 		}
