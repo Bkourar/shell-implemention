@@ -34,7 +34,6 @@ t_sh	*pi_processing_cmd(t_sh **lst, char *str)
 	t_sh	*tmp;
 	char	c1;
 	char	c2;
-	int		i;
 
 	tmp = (*lst);
 	while (tmp != NULL)
@@ -47,13 +46,13 @@ t_sh	*pi_processing_cmd(t_sh **lst, char *str)
 	}
 	tmp = ft_lstlast(lst);
 	if (tmp->type == L_err && !check_herepipe(lst))
-		(run_heredoc(str, 0), synatx_error(tmp->token));
+		return (run_heredoc(str, 0), synatx_error(tmp->token), NULL);
 	else if (tmp->type == L_err && check_herepipe(lst) != 0)
-		synatx_error(tmp->token);
-	pi_processing_err_1(lst, &tmp, str);//pipe
-	pi_processing_err_2(lst, str);//direction
-	pi_processing_err_4((*lst), 0, str);//quote
-	pi_processing_err_5(lst, str);//echo
+		return (synatx_error(tmp->token), NULL);
+	if (pi_processing_err_1(lst, &tmp, str) || pi_processing_err_2(lst, str))
+		return (NULL);
+	if (pi_processing_err_4(lst, 0, str) || pi_processing_err_5(lst, str))
+		return (NULL);
 	return (tmp);
 }
 

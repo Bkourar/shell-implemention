@@ -38,3 +38,26 @@ void	print_errors()
 {
 	write(2, "bash: syntax error near unexpected token `newline'\n", 52);
 }
+
+char	loop(t_sh **tmp, ee type, int *j)
+{
+	char c;
+
+	while ((*tmp) != NULL && *j != 2)
+	{
+		if ((*tmp)->type == type)
+		{
+			c = (*tmp)->token[0];
+			*j += 1;
+		}
+		(*tmp) = (*tmp)->nx;
+	}
+	return (c);
+}
+
+void	synatx_quotes(char c)
+{
+	write(2, "bash: unexpected EOF while looking for matching `", 50);
+	write(2, &c, 1);
+	write(2, "'\n", 2);
+}

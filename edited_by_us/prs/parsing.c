@@ -57,40 +57,33 @@ int	pi_processing_err_2(t_sh **f, char *del)
 	return (0);
 }
 
-int	pi_processing_err_4(t_sh *f, int i, char *del)
+int	pi_processing_err_4(t_sh **l, int i, char *del)
 {
+	t_sh	*f;
+	char	c;
+
+	f = (*l);
 	while (f)
 	{
-		i = 0;
 		if (f != NULL && f->type == s_quot)
-		{
-			while (f != NULL && i != 2)
-			{
-				if (f->type == s_quot) i++;
-				f = f->nx;
-			}
-		}
+			c = loop(&f, f->type, &i);
 		if (f != NULL && f->type == d_quot)
+			c = loop(&f, f->type, &i);
+		if (!(i == 2 || i == 0) && f == NULL && !check_heredoc(l))
+			return (synatx_quotes(c), 1);
+		else if (!(i == 2 || i == 0) && f == NULL && check_heredoc(l) != 0)
+			return (synatx_quotes(c), run_heredoc(del, 0), 1);
+		else if (i == 2 && f != NULL)
+			i = 0;
+		else if (i == 0 && f != NULL)
 		{
-			while (f != NULL && i != 2)
-			{
-				if (f->type == d_quot) i++;
-				f = f->nx;
-			}
+			i = 0;
+			f = f->nx;
 		}
-		if (!(i == 2 || i == 0) && f == NULL)
-			return (synatx_error("quote"), 1);
-		f = f->nx;
 	}
 	return (0);
 }
 
-	// if (i == 2 && f != NULL)
-	// 	(pi_processing_err_4(f, 0, del));
-	// else if (i == 0 && f != NULL)
-	// 	(pi_processing_err_4(f->nx, 0, del));
-	// if (f == NULL)
-	// 	return ;
 int	pi_processing_err_5(t_sh **lst, char *del)
 {
 	t_sh	*tmp;
@@ -102,10 +95,10 @@ int	pi_processing_err_5(t_sh **lst, char *del)
 		{
 			tmp = tmp->nx;
 			if (tmp == NULL)
-				return ;
+				break ;
 			else if (tmp->type == s_quot || tmp->type == d_quot)
 			{
-				if (pi_processing_err_4(tmp, 0, del) == 1)
+				if (pi_processing_err_4(&tmp, 0, del) == 1)
 					return (1);
 			}
 		}
@@ -114,7 +107,7 @@ int	pi_processing_err_5(t_sh **lst, char *del)
 	return (0);
 }
 
-void	pi_processing_err_3(t_sh **l, t_sh **ps, char c0, char c1, char *del)
+int	pi_processing_err_3(t_sh **l, t_sh **ps, char c0, char c1, char *del)
 {
 	if (c1 == '>' && !check_pos_here(l, ps))
 		return (synatx_error(">"), 1);//run just err

@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "minishell1.h"
 
 void	up_grade(t_sh **n, char *string)
 {

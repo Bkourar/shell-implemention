@@ -1,4 +1,4 @@
-#include "./parse/minishell.h"
+#include "./prs/minishell.h"
 
 static int mt_or_only_sp(char *str)
 {
@@ -25,7 +25,6 @@ int main()
 		if (mt_or_only_sp(readit) == 3)
 			continue;
 		cmd = parse_line(readit, &cmd);
-		// cmd = pi_processing_data(readit);
 		int i = 0;
 		while(cmd)
 		{

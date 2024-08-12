@@ -1,5 +1,5 @@
 NAME = minishell
-DIR1 = parse
+DIR1 = prs
 # DIR2 = exec
 SRCS1 = $(wildcard $(DIR1)/*.c)
 # SRCS2 = $(wildcard $(DIR2)/*.c)

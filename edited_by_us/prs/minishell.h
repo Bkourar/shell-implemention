@@ -22,11 +22,11 @@ m_sh	*parse_line(char *line, m_sh **cmd);
 char	*get_word(char	*str);
 
 // 1 : processing parte
-void	pi_processing_err_3(t_sh **l, t_sh **ps, char c0, char c1, char *del);
+int		pi_processing_err_3(t_sh **l, t_sh **ps, char c0, char c1, char *del);
 int		pi_processing_err_1(t_sh **f, t_sh **l, char *del);
-void	pi_processing_err_4(t_sh *f, int i, char *del);
-void	pi_processing_err_5(t_sh **lst, char *del);
-void	pi_processing_err_2(t_sh **f, char *del);
+int		pi_processing_err_4(t_sh **l, int i, char *del);
+int		pi_processing_err_5(t_sh **lst, char *del);
+int		pi_processing_err_2(t_sh **f, char *del);
 t_sh	*pi_processing_cmd(t_sh **lst, char *del);
 
 /*############      list      ############ */
@@ -46,12 +46,14 @@ t_sh	*create_commands(char **words);
 int		check_pos_here(t_sh **lst, t_sh **breaking);
 int		checker_typing(char const *santax);
 int		check_herepipe(t_sh **l);
+int		check_heredoc(t_sh **lst);
 int		check_op(char c);
 int		check_op1(ee i);
 void	free_tsh(t_sh **likend);
 void	synatx_error(char *str);
+void	synatx_quotes(char c);
 void	print_errors();
-
+char	loop(t_sh **tmp, ee type, int *j);
 
 /*--------------------------------------------------------------------------------------------------------*/
 /*--------------------------------------------------------------------------------------------------------*/
