@@ -1,13 +1,15 @@
 NAME = minishell
-DIR1 = parse
-DIR2 = builtin
+DIR1 = prs
+DIR2 = exec
+DIR3 = expand
 SRCS1 = $(wildcard $(DIR1)/*.c)
 SRCS2 = $(wildcard $(DIR2)/*.c)
+SRCS3 = $(wildcard $(DIR3)/*.c)
 
-SRCS = $(SRCS1) $(SRCS2) main.c
+SRCS = $(SRCS1) $(SRCS2) $(SRCS3) main.c
 OBJS = $(SRCS:%.c=%.o)
-CC = gcc
-CFLAGS = -fsanitize=address -g -Wall -Werror -Wextra
+CC = cc
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g
 
 # Default target
 all: $(NAME)
