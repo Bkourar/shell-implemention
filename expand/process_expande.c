@@ -19,10 +19,10 @@ char	**pi_processing_expand(char *str, t_env **env, bool b)
 	tp = head;
 	while (tp)
 	{
-		if (tp->input[0] != '\0')
-			printf("[:%s:]", tp->input);
-		else
-			puts("sjel");
+		// if (tp->input[0] != '\0')
+			printf("[%s]", tp->input);
+		// else
+		// 	puts("sjel");
 		if (tp->state == join)
 			printf("  :  join\n");
 		else

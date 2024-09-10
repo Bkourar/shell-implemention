@@ -5,7 +5,7 @@ t_exp	*upgrade_input(char *in, bool b, t_type l, t_state st)
 {
 	t_exp	*new;
 
-	if (in[0] == ' ' && in[1] == '\0' && st == init)
+	if ((in[0] == ' ' && in[1] == '\0') || in[0] == '\0')
 	{
 		puts("pooom");
 		return NULL;
@@ -13,7 +13,6 @@ t_exp	*upgrade_input(char *in, bool b, t_type l, t_state st)
 	new = (t_exp *)malloc(sizeof(t_exp));
 	if (!new)
 		write(2, "faile allocation\n", 18), exit(1);
-	// printf("{%s}\n", in);
 	new->input = ft_strdup(in);
 	new->logic = b;
 	new->type = l;
