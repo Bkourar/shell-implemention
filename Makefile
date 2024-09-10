@@ -9,7 +9,7 @@ SRCS3 = $(wildcard $(DIR3)/*.c)
 SRCS = $(SRCS1) $(SRCS2) $(SRCS3) main.c
 OBJS = $(SRCS:%.c=%.o)
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra
 
 # Default target
 all: $(NAME)

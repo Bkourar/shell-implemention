@@ -105,9 +105,9 @@ m_sh	*parse_line(char *line, m_sh **cmd, t_env **env)
 		return (NULL);
 	free_tsh(&tok);
 	(*cmd) = pi_processing_data(line, env);
-	printf("0 : %s\n", (*cmd)->args[0]);
-	printf("1 : %s\n", (*cmd)->args[1]);
-	printf("2 : %s\n", (*cmd)->args[2]);
+	// printf("0 : %s\n", (*cmd)->args[0]);
+	// printf("1 : %s\n", (*cmd)->args[1]);
+	// printf("2 : %s\n", (*cmd)->args[2]);
 	// printf("3 : %s\n", (*cmd)->args[3]);
 	// printf("4 : %s\n", (*cmd)->args[4]);
 	// printf("5 : %s\n", (*cmd)->args[5]);

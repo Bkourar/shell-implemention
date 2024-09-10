@@ -50,11 +50,11 @@ int main(int ac, char **av, char **env)
 			cmd = parse_line(readit, &cmd, &e);
 			if (!cmd)
 				continue ;
+			free_shell_list(cmd);
 		}
 		wait(NULL);
 		// add_history(readit);
 		// ft_start_exec(&cmd, &e);
-		// free_shell_list(cmd);
 		// cmd = NULL;
 		free(readit);
 	}

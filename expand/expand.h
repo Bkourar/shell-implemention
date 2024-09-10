@@ -15,6 +15,7 @@ typedef enum type_expand
 
 typedef enum state_join
 {
+	init,
 	join,
 	not_join
 }	t_state;
@@ -32,7 +33,7 @@ typedef struct s_expand
 char	**pi_processing_expand(char *str, t_env **env, bool b);
 t_exp	*update_input(char *in, t_exp **lst, bool b);
 t_exp	*upgrade_input(char *in, bool b, t_type l, t_state st);
-void	copy_input(char	*dst, char *src, int *i, t_state *st);
+// void	copy_input(char	*dst, char *src, int *i, t_state *st);
 void	ft_lstadd_back_texp(t_exp **lst, t_exp *new);
 void	upgrade_type(t_type *tp, bool logic);
 int		valid_expand(char c);
@@ -42,5 +43,8 @@ int		valid_condtion(char *str, int p);
 // char	**parssing_expand(t_exp **head);
 int		check_space(char *str);
 int		ft_lstsiz_exp(t_exp *lst);
+int		valid_join(char *src, int *i, t_exp *lst);
+int		white_sp(char c);
+t_exp	*ft_lstlast_exp(t_exp **lst);
 
 #endif

@@ -11,18 +11,23 @@ char	**pi_processing_expand(char *str, t_env **env, bool b)
 {
 	t_exp	*head;
 	char	**spl;
+	t_exp	*tp;
 
 	head = NULL;
 	head = update_input(str, &head, b);
 	search_and_replace(&head, env, 0);
-	while (head)
+	tp = head;
+	while (tp)
 	{
-		printf("[%s]", head->input);
-		if (head->state == join)
+		if (tp->input[0] != '\0')
+			printf("[:%s:]", tp->input);
+		else
+			puts("sjel");
+		if (tp->state == join)
 			printf("  :  join\n");
 		else
 			printf("  :  not_join\n");
-		head = head->next;
+		tp = tp->next;
 	}
 	exit(2);
 	spl = ft_split(join_expand(&head), ' ');
