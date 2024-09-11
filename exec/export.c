@@ -98,7 +98,7 @@ void	build_export(m_sh *cmd, t_env *env)
 		return (exp_no_args(env));
 	else
 	{
-		while(cmd->args[i])
+		while(cmd->args[i])////modif chi la3bat;
 		{
 			if (valid_x_arg(cmd->args[i]) == 1)
 			{

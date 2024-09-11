@@ -73,19 +73,19 @@ int	white_sp(char c)
 	return (0);
 }
 
-int	valid_join(char *src, int *i, t_exp *lst)
-{
-	t_exp	*tp;
+// int	valid_join(char *src, int *i, t_exp *lst)
+// {
+// 	t_exp	*tp;
 
-	tp = ft_lstlast_exp(&lst);
-	if (tp != NULL && (tp->state == join))
-	{
-		if ((isquote(src[(*i)]) && src[(*i - 1)] != ' ') || src[*i] != ' ')
-			return (1);
-		else
-			return (0);
-	}
-	else if (src[*i] == '\0' || white_sp(src[*i]))
-		return (0);
-	return (1);
-}
+// 	tp = ft_lstlast_exp(&lst);
+// 	if (tp != NULL && (tp->state == join))
+// 	{
+// 		if ((isquote(src[*i]) && src[(*i - 1)] != ' ') || src[*i] != ' ')
+// 			return (1);
+// 		else
+// 			return (0);
+// 	}
+// 	else if (src[*i] == '\0' || white_sp(src[*i]))
+// 		return (0);
+// 	return (1);
+// }
