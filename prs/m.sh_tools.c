@@ -60,21 +60,20 @@ t_redir	*creat_node(char *str, t_redir *node, t_env **env)
 	return (node);
 }
 
-m_sh	*creat_commandline(m_sh **node, char *str, int *i, t_env **env)
+m_sh	*creat_commandline(m_sh **node, char *str, int *i)
 {
-	char	**spl;
-	int			j;
+	// char	**spl;
+	// int			j;
 
-	spl = pi_processing_expand(str, env, false);
-	j = -1;
-	while (spl[++j])
-	{
-		printf("{%s}\n", spl[j]);
-		(*node)->args[*i] = ft_strdup(spl[j]);
+	// spl = pi_processing_expand(str, env, false);
+	// j = -1;
+	// while (spl[++j])
+	// {
+		(*node)->args[*i] = ft_strdup(str);
 		if (!(*node)->args[*i])
 			return (NULL);
-		*i += 1;
-	}
+		// *i += 1;
+	// }
 	return (*node);
 }
 

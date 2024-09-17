@@ -4,12 +4,12 @@ void	search_and_replace(t_exp **txp, t_env **env, int b)
 {
 	t_env	*tnv;
 
-	if ((*txp) == NULL || ((*txp)->next == NULL && (*txp)->type == not_exp))
+	if ((*txp) == NULL || ((*txp)->next == NULL && (*txp)->set->tp == not_exp))
 		return ;
 	tnv = (*env);
 	while (tnv && (*txp))
 	{
-		if ((*txp)->type == not_exp)
+		if ((*txp)->set->tp == not_exp)
 			break ;
 		else if (!ft_strcmp(tnv->var, (*txp)->input))
 		{
@@ -21,7 +21,7 @@ void	search_and_replace(t_exp **txp, t_env **env, int b)
 		}
 		tnv = tnv->next;
 	}
-	if (b == 0 && (*txp)->type == exp && ft_strcmp((*txp)->input, "?"))
+	if (b == 0 && (*txp)->set->tp == exp)
 	{
 		free((*txp)->input);
 		(*txp)->input = ft_strdup("\0");
@@ -29,25 +29,6 @@ void	search_and_replace(t_exp **txp, t_env **env, int b)
 	search_and_replace(&(*txp)->next, env, 0);
 }
 
-// char	**parssing_expand(t_exp **head)
-// {
-// 	char	**data = NULL;
-// 	// char	**spl;
-// 	char	*str;
-// 	t_exp	*tp;
-
-// 	data = (char **)malloc(sizeof(char *) * ft_lstsize((*head)));
-// 	str = ft_strdup((*head)->input);
-// 	tp = (*head)->next;
-// 	while (tp)
-// 	{
-// 		if (tp->state == join)
-// 			str = ft_strjoin(str, tp->input);
-// 		else
-			
-// 	}
-// 	return (data);
-// }
 t_exp	*ft_lstlast_exp(t_exp **lst)
 {
 	t_exp	*tmp;
@@ -73,19 +54,54 @@ int	white_sp(char c)
 	return (0);
 }
 
-// int	valid_join(char *src, int *i, t_exp *lst)
-// {
-// 	t_exp	*tp;
+void	update_list(char **in, t_exp **lst)
+{
+	t_exp	*head;
+	int		i;
+	int		j;
 
-// 	tp = ft_lstlast_exp(&lst);
-// 	if (tp != NULL && (tp->state == join))
-// 	{
-// 		if ((isquote(src[*i]) && src[(*i - 1)] != ' ') || src[*i] != ' ')
-// 			return (1);
-// 		else
-// 			return (0);
-// 	}
-// 	else if (src[*i] == '\0' || white_sp(src[*i]))
-// 		return (0);
-// 	return (1);
-// }
+	i = 0;
+	head = NULL;
+	while (in[i])
+	{
+		j = 0;
+		if (in[i][0] == '$')
+			expand(in[i], &j, &head);
+		else if (in[i][0] == '\"')
+			parssing_expand(in[i], &j, &head);
+		else if (in[i][0] == '\'')
+			cin_singl_q(in[i], &j, &head);
+		else
+			copy_general(in[i], &j, &head);
+		i++;
+	}
+	(*lst) = head;
+}
+
+char	**update_array(t_exp **lst)
+{
+	int		i;
+	char	**data;
+	t_exp	*tmp;
+
+	data = (char **)malloc(ft_lstsiz_exp((*lst)) * sizeof(char *) + 1);
+	if (!data)
+		write(2, "faile allocation\n", 18), exit(1);
+	i = 0;
+	tmp = (*lst);
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->input, """") || !ft_strcmp(tmp->input, "''"))
+			tmp = tmp->next;
+		else
+		{
+			if (tmp->set->sp == skip)
+				data[i++] = ft_strdup(" ");
+			else
+				data[i++] = ft_strdup(tmp->input);
+			tmp = tmp->next;
+		}
+	}
+	data[i] = 0;
+	return (data);
+}

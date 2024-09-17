@@ -57,6 +57,7 @@ void	free_tsh(t_sh **likend);
 void	synatx_error(char *str);
 void	synatx_quotes(char c);
 void	print_errors();
+int	    check_redir(char const *str);
 char	loop(t_sh **tmp, ee type, int *j);
 
 //expending
@@ -79,7 +80,7 @@ void	complete_type(t_sh **lst, int type);
 char	*ft_strdup(char const *src);
 size_t	ft_strlen(const char *theString);
 t_redir	*creat_node(char *str, t_redir *node, t_env **env);
-m_sh	*creat_commandline(m_sh **node, char *str, int *i, t_env **env);
+m_sh	*creat_commandline(m_sh **node, char *str, int *i);
 int		check_hash(char *str, int *i);
 void	change_dbq(char *c1, char *c2, int *j, int *i);
 /*#################   string   #####################*/

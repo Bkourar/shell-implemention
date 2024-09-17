@@ -5,7 +5,6 @@ m_sh	*pi_processing_pro(char *str, m_sh **node, t_env **env)
 	char		**cmd;
 	m_sh		*new;
 	int			i;
-	static int	j;
 
 	new = (m_sh *) malloc(sizeof(m_sh));
 	if (!new)
@@ -19,12 +18,10 @@ m_sh	*pi_processing_pro(char *str, m_sh **node, t_env **env)
 		return (NULL);
 	while (cmd[i])
 	{
-		printf("[%s]\n", cmd[i]);
-		new = creat_commandline(&new, cmd[i], &j, env);
+		new = creat_commandline(&new, cmd[i], &i);
 		i++;
 	}
-	new->args[j] = 0;
-	j = 0;
+	new->args[i] = 0;
 	return (new->dir = (*node)->dir, new->next = NULL, new);
 }
 
@@ -50,7 +47,7 @@ t_sh	*pi_processing_cmd(t_sh **lst, char *str)
 		return (synatx_error(tmp->token), NULL);
 	if (pi_processing_err_1(lst, &tmp, str) || pi_processing_err_2(lst, str))
 		return (NULL);
-	if (pi_processing_err_4(lst, 0, str) || pi_processing_err_5(lst, str))
+	else if (pi_processing_err_4(lst, 0, str) || pi_processing_err_5(lst, str))
 		return (NULL);
 	return (tmp);
 }

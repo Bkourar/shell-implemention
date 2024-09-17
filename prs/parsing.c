@@ -67,12 +67,12 @@ int	pi_processing_err_4(t_sh **l, int i, char *del)
 	{
 		if (f != NULL && f->type == s_quot)
 			c = loop(&f, f->type, &i);
-		if (f != NULL && f->type == d_quot)
+		else if (f != NULL && f->type == d_quot)
 			c = loop(&f, f->type, &i);
 		if (!(i == 2 || i == 0) && f == NULL && !check_heredoc(l))
 			return (synatx_quotes(c), 1);
 		else if (!(i == 2 || i == 0) && f == NULL && check_heredoc(l) != 0)
-			return (synatx_quotes(c), run_heredoc(del, 0, l, NULL), 1);
+			return (puts("error 102"), synatx_quotes(c), run_heredoc(del, 0, l, NULL), 1);
 		else if (i == 2 && f != NULL)
 			i = 0;
 		else if (i == 0 && f != NULL)

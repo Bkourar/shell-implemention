@@ -45,7 +45,7 @@ t_sh	*parse_commands_1(char const *st, t_env **env)
 	t_sh	*new;
 
 	new = NULL;
-	if (!check_op(st[0]) && (st[1] == '\0' || st[2] == '\0'))
+	if (!check_op(st[0]) && (st[1] == '\0' || check_redir(st)))
 	{
 		new = (t_sh *)malloc(sizeof(t_sh));
 		if (!new)

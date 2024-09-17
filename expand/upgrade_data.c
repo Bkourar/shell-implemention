@@ -1,19 +1,34 @@
 # include "expand.h"
 
+void	upgrade_setting(t_set **setting, int rwx)
+{
+	if (rwx == 4 || rwx == 6 || rwx == 5 || rwx == 7)
+		(*setting)->tp = exp;
+	else
+		(*setting)->tp = not_exp;
+	if (rwx == 2 || rwx == 6 || rwx == 3 || rwx == 7)
+		(*setting)->sp = skip;
+	else
+		(*setting)->sp = not_skip;
+	if (rwx == 1 || rwx == 5 || rwx == 3 || rwx == 7)
+		(*setting)->st = join;
+	else
+		(*setting)->st = not_join;
+}
 
-t_exp	*upgrade_input(char *in, bool b, t_type l)
+t_exp	*upgrade_input(char *in, bool b, int *chmod)
 {
 	t_exp	*new;
 
-	if ((in[0] == ' ' && in[1] == '\0') || in[0] == '\0')
-		return NULL;
 	new = (t_exp *)malloc(sizeof(t_exp));
 	if (!new)
 		write(2, "faile allocation\n", 18), exit(1);
+	new->set = (t_set *)malloc(sizeof(t_set));
+	if (!new->set)
+		write(2, "faile allocation\n", 18), exit(1);
+	upgrade_setting(&new->set, *chmod);
 	new->input = ft_strdup(in);
 	new->logic = b;
-	new->type = l;
-	// new->state = st;
 	new->next = NULL;
 	return (new);
 }
@@ -37,12 +52,9 @@ void	ft_lstadd_back_texp(t_exp **lst, t_exp *new)
 	new->prv = temp; 
 }
 
-void	upgrade_type(t_type *tp, bool logic)
+void	premission(int *chmod, int tp, int sp, int st)
 {
-	if (logic == true)
-		*tp = exp;
-	else
-		*tp = not_exp;
+	*chmod = tp + sp + st;
 }
 
 char	*join_expand(t_exp **lst)
@@ -54,11 +66,6 @@ char	*join_expand(t_exp **lst)
 	str = NULL;
 	while (tp)
 	{
-		// printf("{%s}\n", tp->input);
-		// if (tp->type == exp)
-		// 	printf("exp\n");
-		// else
-		// 	printf("not_exp\n");
 		str = ft_strjoin(str, tp->input);
 		if (!str)
 			write(2, "faile allocation\n", 18), exit(1);
@@ -67,17 +74,9 @@ char	*join_expand(t_exp **lst)
 	return (str);
 }
 
-int	valid_condtion(char *str, int p, bool b)
+int	valid_condtion(char *str, int p)
 {
-	if (b == true && str[p] == '$' && valid_expand(str[p + 1]))
-	{
-		if (p != 0 && !isquote(str[p - 1]))
-			return (1);
-	}
-	else if (b == false)
-	{
-		if (isquote(str[p]) && str[p + 1] == '$' && valid_expand(str[p + 2]))
-			return (1);
-	}
+	if (str[p] == '$' && valid_expand(str[p + 1]))
+		return (1);
 	return (0);
 }

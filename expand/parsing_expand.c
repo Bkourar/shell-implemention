@@ -1,38 +1,102 @@
 #include "expand.h"
 
-char	*expand_whit_dq(char *in, t_exp **lst)
-{
-	char	stack;
-	t_type	*tp;
-	int		i;
-
-	i = 0;
-	*tp = not_exp;
-	while (in[i])
-	{
-		stack = (char *)malloc(_ft_strlen(in) * sizeof(char) + 1);
-		if (!stack)
-			write(2, "faile allocation\n", 18), exit(1);
-		if (valid_condtion(in, i, false))
-			(copy_input(stack, in, &i, lst), upgrade_type(&tp, true));
-		else if (in[i] == '\'')
-			(copy_whit_sq(stack, in, &i, lst), upgrade_type(&tp, false));
-		else
-			(copy_standard(stack, in, &i, lst) ,upgrade_type(&tp, false));
-		(ft_lstadd_back_texp(lst, upgrade_input(stack, false, tp)), free(stack));
-	}
-}
-
 int	condition_expand(char *str)
 {
-	int	i;
 
-	i = 0;
-	while (*str)
-	{
-		if (str[i] == '$' && valid_expand(str[i + 1]))
-			return (1);
-		i++;
-	}
+	if (str[0] == '$' && valid_expand(str[1]))
+		return (1);
 	return (0);
+}
+
+void	expand(char *arr, int *i, t_exp **lst)
+{
+	char	*dst;
+	int		chmod;
+	int		j;
+
+	if (arr[*i] && (arr[*i] == '$' || is_numeric(arr[(*i + 1)])))
+		*i += 1;
+	dst = (char *)malloc(sizeof(char) * _ft_strlen(arr) + 1);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	chmod = 0;
+	j = 0;
+	while (arr[*i])
+	{
+		dst[j++] = arr[*i];
+		*i += 1;
+	}
+	(dst[j] = '\0', premission(&chmod, 4, 0, 0));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+}
+
+void	expand_sq(char *arr, int *i, t_exp **lst)
+{
+	char	*dst;
+	int		chmod;
+	int		j;
+
+	if (arr[*i] && (arr[*i] == '$' || is_numeric(arr[(*i + 1)])))
+		*i += 1;
+	dst = (char *)malloc(sizeof(char) * _ft_strlen(arr) + 1);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	chmod = 0;
+	j = 0;
+	while (arr[*i])
+	{
+		if (is_numeric(arr[(*i - 1)]) && is_numeric(arr[*i]))
+			break ;
+		if (!valid_expand(arr[*i]))
+			break ;
+		dst[j++] = arr[*i];
+		*i += 1;
+	}
+	(dst[j] = '\0', premission(&chmod, 4, 0, 1));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+}
+
+void	copy_single_q(char *src, int *i, t_exp **lst)
+{
+	char	*dst;
+	int		chmod;
+	int		j;
+
+	dst = (char *)malloc(sizeof(char) *  2);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	chmod = 0;
+	j = 0;
+	if (src[*i] == '\'')
+		dst[j++] = src[*i];
+	(dst[j] = '\0', premission(&chmod, 0, 0, 1));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+	*i += 1;
+}
+
+void	cin_singl_q(char *src, int *i, t_exp **lst)
+{
+	char	*dst;
+	int		chmod;
+	int		j;
+
+	if (src[*i] && src[*i] == '\'')
+		*i += 1;
+	dst = (char *)malloc(sizeof(char) * _ft_strlen(src) + 1);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	chmod = 0;
+	j = 0;
+	while (src[*i])
+	{
+		if (j != 0 && src[*i] == '\'')
+			break ;
+		else
+			dst[j++] = src[*i];
+		*i += 1;
+	}
+	(dst[j] = '\0', premission(&chmod, 0, 0, 1));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+	if (src[*i] && src[*i] == '\'')
+		*i += 1;
 }

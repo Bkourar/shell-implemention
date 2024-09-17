@@ -85,3 +85,10 @@ int	is_alpha(char c)
 		return (1);
 	return (0);
 }
+
+int	check_redir(char const *str)
+{
+	if (!ft_strcmp(str, "<<") || !ft_strcmp(str, ">>"))
+		return (1);
+	return (0);
+}

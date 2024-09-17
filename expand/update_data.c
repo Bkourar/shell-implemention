@@ -1,13 +1,19 @@
 #include "expand.h"
 
-void	copy_input(char	*dst, char *src, int *i, t_exp **lst)
+void	copy_input(char *src, int *i, t_exp **lst)
 {
-	int	j;
+	char	*dst;
+	int		j;
+	int		chmod;
 
-	(void)lst;
 	if (src[*i] && (src[*i] == '$' || is_numeric(src[(*i + 1)])))
 		*i += 1;
 	j = 0;
+	dst = (char *)malloc(sizeof(char) * _ft_strlen(src) + 1);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	dst[j++] = '$';
+	chmod = 0;
 	while (src[*i])
 	{
 		if (is_numeric(src[(*i - 1)]) && is_numeric(src[*i]))
@@ -17,20 +23,20 @@ void	copy_input(char	*dst, char *src, int *i, t_exp **lst)
 		dst[j++] = src[*i];
 		*i += 1;
 	}
-	dst[j] = '\0';
-	// if (dst[0] == ' ' && dst[1] == '\0')
-	// 	return ;
-	// if (!valid_join(src, i, *lst))
-	// 	*st = not_join;
-	// else
-	// 	*st = join;
+	(dst[j] = '\0', premission(&chmod, 4, 0, 0));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
 }
 
-
-void	copy_whit_sq(char *dst, char *src, int *i, t_exp **lst)
+void	copy_whit_sq(char *src, int *i, t_exp **lst)
 {
-	int	j;
-	(void)lst;
+	char	*dst;
+	int		j;
+	int		chmod;
+
+	dst = (char *)malloc(sizeof(char) * _ft_strlen(src) + 1);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	chmod = 0;
 	j = 0;
 	while (src[*i])
 	{
@@ -40,19 +46,22 @@ void	copy_whit_sq(char *dst, char *src, int *i, t_exp **lst)
 		*i += 1;
 	}
 	dst[j++] = '\'';
-	dst[j] = '\0';
-	// if (!valid_join(src, i, *lst))
-	// 	*st = not_join;
-	// else
-	// 	*st = join;
+	(dst[j] = '\0', premission(&chmod, 0, 0, 0));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
 	if (src[*i] == '\'')
 		*i += 1; 
 }
 
-void	copy_whit_dq(char *dst, char *src, int *i, t_exp **lst)
+void	copy_whit_dq(char *src, int *i, t_exp **lst)
 {
-	int	j;
-	(void)lst;
+	char	*dst;
+	int		j;
+	int		chmod;
+
+	dst = (char *)malloc(sizeof(char) * _ft_strlen(src) + 1);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	chmod = 0;
 	j = 0;
 	while (src[*i])
 	{
@@ -62,17 +71,22 @@ void	copy_whit_dq(char *dst, char *src, int *i, t_exp **lst)
 		*i += 1;
 	}
 	dst[j++] = '\"';
-	dst[j] = '\0';
-	if (condtion_expand(dst))
-		dst = expand_whit_dq(dst, lst);
+	(dst[j] = '\0', premission(&chmod, 4, 0, 0));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
 	if (src[*i] == '\"')
 		*i += 1;
 }
 
-void	copy_standard(char *dst, char *src, int *i, t_exp **lst)
+void	copy_standard(char *src, int *i, t_exp **lst)
 {
-	int	j;
-	(void)lst;
+	char	*dst;
+	int		j;
+	int		chmod;
+
+	dst = (char *)malloc(sizeof(char) * _ft_strlen(src) + 1);
+	if (!dst)
+		write(2, "faile allocation\n", 18), exit(1);
+	chmod = 0;
 	j = 0;
 	while (src[*i])
 	{
@@ -80,46 +94,36 @@ void	copy_standard(char *dst, char *src, int *i, t_exp **lst)
 			*i += 1;
 		else if (j != 0 && (isquote(src[*i]) || src[*i] == '$'))
 			break ;
+		else if (white_sp(src[*i]))
+			break;
 		else
 		{
 			dst[j++] = src[*i];
 			*i += 1;
 		}
 	}
-	dst[j] = '\0';
-	// if (dst[0] == ' ' && dst[1] == '\0')
-	// 	return ;
-	// if (!valid_join(src, i, *lst))
-	// 	*st = not_join;
-	// else
-	// 	*st = join;
+	(dst[j] = '\0', premission(&chmod, 0, 0, 0));
+	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
 }
 
-t_exp	*update_input(char *in, t_exp **lst, bool b)
+t_exp	*update_input(char *in, t_exp **lst)
 {
 	t_exp	*head;
-	char	*stack;
-	// t_state	st;
-	t_type	tp;
 	int		i;
 
 	i = 0;
-	// st = init;
-	tp = not_exp;
 	while (in[i])
 	{
-		stack = (char *)malloc(_ft_strlen(in) * sizeof(char) + 1);
-		if (!stack)
-			write(2, "faile allocation\n", 18), exit(1);
-		if (valid_condtion(in, i, true))
-			(copy_input(stack, in, &i, lst), upgrade_type(&tp, true));
+		if (valid_condtion(in, i))
+			copy_input(in, &i, lst);
 		else if (in[i] == '\'')
-			(copy_whit_sq(stack, in, &i, lst), upgrade_type(&tp, false));
+			copy_whit_sq(in, &i, lst);
 		else if (in[i] == '\"')
-			(copy_whit_dq(stack, in, &i, lst), upgrade_type(&tp, false));
+			copy_whit_dq(in, &i, lst);
+		else if (white_sp(in[i]))
+			skip_wspace(in, &i, lst);
 		else
-			(copy_standard(stack, in, &i, lst) ,upgrade_type(&tp, false));
-		(ft_lstadd_back_texp(lst, upgrade_input(stack, b, tp)), free(stack));
+			copy_standard(in, &i, lst);
 	}
 	return (head = (*lst), head);
 }

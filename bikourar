@@ -1,0 +1,24 @@
+touch OK"HELLO $x" HELLO $x
+touch "OK       ""HELLO $x" HELLO $x
+         
+		// printf("[%s]\n", tp->input);
+		// if (tp->set->tp == exp)
+		// 	printf("  :  exp  ");
+		// else
+		// 	printf("  :  not_exp  ");
+		// if (tp->set->sp == skip)
+		// 	printf("  :  skip  ");
+		// else
+		// 	printf("  :  not_skip  ");
+		
+		// if (tp->set->st == join)
+		// 	printf("  :  join\n");
+		// else
+		// 	printf("  :  not_join\n");
+        
+    if (rwx == 3 || rwx == 1 || rwx == 2 || rwx == 0)
+		setting->tp = exp;
+	if (rwx == 5 || rwx == 1 || rwx == 4 || rwx == 0)
+		setting->sp = skip;
+	if (rwx == 6 || rwx == 2 || rwx == 4 || rwx == 0)
+		setting->st = join;
