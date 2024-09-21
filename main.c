@@ -44,14 +44,12 @@ int main(int ac, char **av, char **env)
 	e = parse_env(env);
 	while (1)
 	{
-		readit = readline("\033[0;32m bash-1.$ \033[0;37m");
-		// if (fork() == 0)
-		// {
+		readit = readline("bash-1.2$ ");
+		if (!readit)
+			break ;
 		cmd = parse_line(readit, &cmd, &e);
 		if (!cmd)
 			continue ;
-		// }
-		wait(NULL);
 		add_history(readit);
 		ft_start_exec(&cmd, &e);
 		free_shell_list(cmd);

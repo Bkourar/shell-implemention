@@ -1,33 +1,5 @@
 #include "expand.h"
 
-void	search_and_replace(t_exp **txp, t_env **env, int b)
-{
-	t_env	*tnv;
-
-	if ((*txp) == NULL || ((*txp)->next == NULL && (*txp)->set->tp == not_exp))
-		return ;
-	tnv = (*env);
-	while (tnv && (*txp))
-	{
-		if ((*txp)->set->tp == not_exp)
-			break ;
-		else if (!ft_strcmp(tnv->var, (*txp)->input))
-		{
-			free((*txp)->input), b = 1;
-			(*txp)->input = ft_strdup(tnv->value);
-			if (!(*txp)->input)
-				write(2, "faile allocation\n", 18), exit(1);
-			break;
-		}
-		tnv = tnv->next;
-	}
-	if (b == 0 && (*txp)->set->tp == exp)
-	{
-		free((*txp)->input);
-		(*txp)->input = ft_strdup("\0");
-	}
-	search_and_replace(&(*txp)->next, env, 0);
-}
 
 t_exp	*ft_lstlast_exp(t_exp **lst)
 {
@@ -84,7 +56,7 @@ char	**update_array(t_exp **lst)
 	char	**data;
 	t_exp	*tmp;
 
-	data = (char **)malloc(ft_lstsiz_exp((*lst)) * sizeof(char *) + 1);
+	data = (char **)malloc((ft_lstsiz_exp((*lst)) + 1) * sizeof(char *));
 	if (!data)
 		write(2, "faile allocation\n", 18), exit(1);
 	i = 0;
@@ -104,4 +76,22 @@ char	**update_array(t_exp **lst)
 	}
 	data[i] = 0;
 	return (data);
+}
+
+char	*s_and_r(t_exp **txp, t_env **env)
+{
+	t_env	*tp;
+
+	tp = (*env);
+	while (tp)
+	{
+		if (!ft_strcmp((*txp)->input, tp->var))
+			return (ft_strdup(tp->value));
+		tp = tp->next;
+	}
+	if (tp == NULL && ft_strcmp((*txp)->input, "?"))
+		return (ft_strdup("\0"));
+	else if (tp == NULL && !ft_strcmp((*txp)->input, "?"))
+		return (ft_strdup("affich stuts"));
+	return (NULL);
 }

@@ -72,13 +72,19 @@ int	valid_join(t_exp *nd)
 {
 	if (nd == NULL)
 		return (0);
-	if (ft_strcmp(nd->input, " ") != 0 && 
+	if (nd->set->st == join)
+		return (1);
+	else if (ft_strcmp(nd->input, " ") != 0 && 
 		(nd->prv != NULL && nd->prv->set->st == join))
-			return (1);
+			return ( 1);
 	else if (ft_strcmp(nd->input, " ") != 0 && 
 		(nd->next != NULL && nd->next->set->st == join))
 			return (1);
-	else if (nd->set->st == join)
-		return (1);
+	else if (ft_strcmp(nd->input, " ") != 0 && 
+		(nd->prv != NULL && ft_strcmp(nd->prv->input, " ") != 0))
+			return (1);
+	else if (ft_strcmp(nd->input, " ") != 0 && 
+		(nd->next != NULL && ft_strcmp(nd->next->input, " ") != 0))
+			return (1);
 	return (0);
 }

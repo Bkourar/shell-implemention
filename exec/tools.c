@@ -139,8 +139,7 @@ char	*get_path(char **arr, char *cmd)
 	{
 		if (access(cmd, X_OK) != -1)
 			return(cmd);
-		else if (access(cmd, X_OK) == -1)
-			return (NULL);
+		return (NULL);
 	}
 	while(arr && arr[i])
 	{
@@ -151,7 +150,6 @@ char	*get_path(char **arr, char *cmd)
 		i++;
 		free(pth);
 		pth = NULL;
-
 	}
 	free(pth);
 	pth = NULL;

@@ -1,6 +1,6 @@
 #include "../prs/minishell.h"
 
-
+// /*
 void	ft_start_exec(m_sh **cmd, t_env **env)
 {
 	int	fd[2];
@@ -104,24 +104,40 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 	dup2(std_out, 1); // Restore original stdout
 	close(std_out);
 }
+// */
+
 /*
 !!!!!!!!!! warning !!!!!!!!!!
-		do not touch 		
-		danger zone 		
+		do not touch
+		danger zone
 */
 
 
-/*
-
-// void init_data(t_data *data, int count)
+/***********  exec_data  *************/
+// typedef struct s_data
 // {
-// 	data->input_fd = 0;
-// 	data->std_in = dup(0);
-// 	data->std_out = dup(1);
-// 	data->count = count;
-// 	data->i = 0;
-// 	data->pids = malloc(sizeof(int) * count);
-// 	if (!data->pids)
+// 	int cnt;
+// 	int fd[2];
+// 	int input_fd;
+// 	int std_in;
+// 	int std_out;
+// 	int *pids;
+// 	int i;
+// 	int status;
+// 	// char **arr;
+// 	// char **env_arr;
+// } t_data;
+
+
+// void init_d(t_data *dt, m_sh *cmd)
+// {
+// 	dt->cnt = ft_lstsize(cmd);
+// 	dt->input_fd = 0;
+// 	dt->std_in = dup(0);
+// 	dt->std_out = dup(1);
+// 	dt->i = 0;
+// 	dt->pids = malloc(sizeof(int) * dt->cnt);
+// 	if (!dt->pids)
 // 	{
 // 		write(2, "malloc", 7);
 // 		exit(1);
@@ -177,7 +193,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 // {
 // 	int	i;
 // 	i = 0;
-// 	while (i < data->count)
+// 	while (i < data->cnt)
 // 	{
 // 		waitpid(data->pids[i], &data->status, 0);
 // 		if (WIFEXITED(data->status))
@@ -218,30 +234,47 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 // 	}
 // }
 
-// void ft_start_exec(m_sh **cmd, t_env **env)
+// void	main_exec(t_data *dt, m_sh *cmd, t_env *env)
 // {
-// 	t_data	data;
+// 	char	*path;
+// }
 
-// 	init_data(&data, ft_lstsize(*cmd));
+// // // void ft_start_exec(m_sh **cmd, t_env **env)
+// // // {
+// // // 	t_data	data;
+// // // 	init_d(&data, cmd);
+// // // 	if (its_bult((*cmd)->args[0]) == 11 && data.cnt == 1)
+// // // 	{
+// // // 		execute_builtin(*cmd, &*env);
+// // // 		return;
+// // // 	}
+// // // 	while (cmd && *cmd)
+// // // 	{
+// // // 		handle_piping_and_forking(&data, cmd, env);
+// // // 		*cmd = (*cmd)->next;
+// // // 		data.i++;
+// // // 	}
+// // // 	wait_for_children(&data);
+// // // 	dup2(data.std_in, 0);
+// // // 	close(data.std_in);
+// // // 	dup2(data.std_out, 1);
+// // // 	close(data.std_out);
+// // // }
 
-// 	if (its_bult((*cmd)->args[0]) == 11 && data.count == 1)
+// void	ft_execution(m_sh **cmd, t_env **env)
+// {
+// 	t_data *dt;
+
+// 	init_d(dt, cmd);
+// 	if (its_bult((*cmd)->args[0]) == 11 && dt->cnt == 1)
 // 	{
-// 		execute_builtin(*cmd, &*env);
+// 		execute_builtin(*cmd, *env);
 // 		return;
 // 	}
 // 	while (cmd && *cmd)
 // 	{
-// 		handle_piping_and_forking(&data, cmd, env);
+// 		main_exec(dt, cmd, env);
 // 		*cmd = (*cmd)->next;
-// 		data.i++;
+// 		dt->i++;
 // 	}
-
-// 	wait_for_children(&data);
-
-// 	dup2(data.std_in, 0);
-// 	close(data.std_in);
-// 	dup2(data.std_out, 1);
-// 	close(data.std_out);
 // }
-
-*/

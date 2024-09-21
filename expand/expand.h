@@ -48,7 +48,7 @@ void	copy_input(char *src, int *i, t_exp **lst);
 void	copy_standard(char *src, int *i, t_exp **lst);
 void	ft_lstadd_back_texp(t_exp **lst, t_exp *new);
 int		valid_expand(char c);
-void	search_and_replace(t_exp **lst, t_env **env, int b);
+char	*s_and_r(t_exp **lst, t_env **env);
 char	*join_expand(t_exp **lst);
 int		valid_condtion(char *str, int p);
 int		valid_join(t_exp *nd);
@@ -71,4 +71,9 @@ void	copy_in_sq(char *src, int *i, t_exp **lst);
 void	update_list(char **in, t_exp **lst);
 void	copy_single_q(char *src, int *i, t_exp **lst);
 void	cin_singl_q(char *src, int *i, t_exp **lst);
+char	**parse_value(t_exp **hd, t_env **env);
+int		own_exp(int tp, int sp, int st);
+void	free_arr(char **arg);
+void	autortion(char **s, t_exp **l, int rwx, bool b);
+
 #endif
