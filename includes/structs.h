@@ -59,16 +59,15 @@ typedef struct command_line
 
 typedef struct s_data
 {
-	int fd[2];        // Pipe file descriptors
-	int input_fd;     // File descriptor for input, initially set to stdin
-	int std_in;       // Saved original stdin file descriptor
-	int std_out;      // Saved original stdout file descriptor
+	int cnt;
+	int fd[2];
+	int  save;
+	int std_in;
+	int std_out;
 	int *pids;
-	int count;
 	int i;
 	int status;
-	// char **arr;
-	// char **env_arr;
 } t_data;
+
 
 #endif

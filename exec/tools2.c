@@ -1,5 +1,10 @@
 #include "minishell.h"
 
+int		ft_isdigit(char c);
+int		ft_isalpha(char c);
+int		ft_isalnum(char c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+
 int	ft_isdigit(char c)
 {
 	if (c >= '0' && c <= '9')
@@ -47,4 +52,3 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[len] = '\0';
 	return (str);
 }
-

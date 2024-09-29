@@ -70,7 +70,7 @@ typedef struct s_redirect
 	struct s_redirect	*prv;
 }					t_dir;
 
-
+char	*join_arg(char **spl);
 char	**pi_processing_expand(char *str, t_env **env, bool b);
 char	*pi_processing_redirect(char *in, t_env **env);
 char	**parse_value(t_exp **hd, t_env **env);
@@ -106,6 +106,8 @@ void	update_list(char **in, t_exp **lst);
 void	upgrade_list(char **in, t_dir **lst);
 void	copy_single_q(char *src, int *i, t_exp **lst);
 void	cin_singl_q(char *src, int *i, t_exp **lst);
+void	copy_general(char *src, int *i, t_exp **lst);
+void	cin_singlq(char *src, int *i, t_dir **lst);
 void	autortion(char **s, t_exp **l, int rwx, bool b);
 void	owner_premt(int *chmod, int	tp, int	wd, int	st);
 void	ft_lstadd_back_dir(t_dir **lst, t_dir *new);
@@ -124,6 +126,8 @@ void	put_ambeg(char *str);
 int		ambiguous_redirect(t_redir **hd);
 t_dir	*config_redirect(char *in, int j, t_dir *nd);
 int		check_empty(char *str);
-
+void	copy_gen(char *src, int *i, t_dir **lst);
+void	cin_singlq(char *src, int *i, t_dir **lst);
+void	copy_singleq(char *src, int *i, t_dir **lst);
 
 #endif

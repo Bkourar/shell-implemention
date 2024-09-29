@@ -15,8 +15,8 @@ void	copy_gen(char *src, int *i, t_dir **lst)
 	{
 		dst[j++] = src[*i];
 		*i += 1;
-	}    
-    (dst[j] = '\0', owner_premt(&chmod, 0, 2, 0));
+	}
+	(dst[j] = '\0', owner_premt(&chmod, 0, 2, 0));
 	(ft_lstadd_back_dir(lst, upgrade_redirect(dst, &chmod, 0)), free(dst));
 }
 
@@ -41,7 +41,7 @@ void	cin_singlq(char *src, int *i, t_dir **lst)
 			dst[j++] = src[*i];
 		*i += 1;
 	}
-    (dst[j] = '\0', owner_premt(&chmod, 0, 2, 1));
+	(dst[j] = '\0', owner_premt(&chmod, 0, 2, 1));
 	(ft_lstadd_back_dir(lst, upgrade_redirect(dst, &chmod, 0)), free(dst));
 	if (src[*i] && src[*i] == '\'')
 		*i += 1;

@@ -23,23 +23,6 @@ void	change_dbq(char *c1, char *c2, int *j, int *i)
 	*i += 2;
 }
 
-void	*ft_calloc(size_t nbr, size_t size)
-{
-	unsigned char	*buf;
-	size_t	i;
-
-	i = 0;
-	buf = (unsigned char *)malloc(size * nbr);
-	if (!buf)
-		return (NULL);
-	while (i < nbr * size)
-	{
-		buf[i] = 0;
-		i++;
-	}
-	return ((void *)buf);
-}
-
 int	check_expend(char c1, char c2)
 {
 	if (c1 == '$' && c2 == '$')
@@ -51,3 +34,17 @@ int	check_expend(char c1, char c2)
 	return (0);
 }
 
+char	*join_arg(char **spl)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	str = NULL;
+	while (spl[i])
+	{
+		str = ft_strjoin(str, spl[i]);
+		i++;
+	}
+	return (str);
+}

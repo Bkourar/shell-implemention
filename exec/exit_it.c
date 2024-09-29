@@ -1,19 +1,5 @@
 #include "minishell.h"
 
-int	valid_exit(char *nbr)
-{
-	int	i;
-
-	i = 0;
-	while(nbr[i])
-	{
-		if (nbr[i] > '9' && nbr[i] < '0')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int	ft_hrb(int flag, int stt)
 {
 	static int	x;
@@ -23,24 +9,44 @@ int	ft_hrb(int flag, int stt)
 	return (x);
 }
 
+int	valid_exit(char *str)
+{
+	while (*str && (*str == '\t' || *str == ' '))
+		str++;
+	if (*str == '\0')
+		return (0);
+	if (*str == '+' || *str == '-')
+		str++;
+	if (!(*str >= '0' && *str <= '9'))
+		return (0);
+	while (*str && (*str >= '0' && *str <= '9'))
+		str++;
+	while (*str && (*str == '\t' || *str == ' '))
+		str++;
+	if (*str == '\0')
+		return (1);
+	return (0);
+}
+
 void	ft_exit(t_sh *cmd)
 {
+	ft_putstr_x("exit\n", NULL, NULL, 2);
 	if (!cmd->args[1])
-	{
-		printf("exit\n");
-		ft_hrb(1, 0);
-	}
-	if (cmd->args[1])
+		exit(ft_hrb(1, 0));
+	else
 	{
 		if (valid_exit(cmd->args[1]) == 0)
 		{
-			printf("exit : %s: numeric argument required\n", cmd->args[1]);
-			ft_hrb(1, 255);
+			ft_putstr_x("exit :",
+				cmd->args[1], ": numeric argument required\n", 2);
+			exit(ft_hrb(1, 255));
 		}
-		else if (valid_exit(cmd->args[2]))
+		else if (cmd->args[2])
 		{
-			printf("exit: too many arguments\n");
+			ft_putstr_x("exit: too many arguments\n", NULL, NULL, 2);
 			ft_hrb(1, 1);
 		}
+		else
+			exit(atoll_x(cmd->args[1]));
 	}
 }

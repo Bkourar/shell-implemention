@@ -34,12 +34,14 @@ void	ft_lstadd_back_msh(t_sh **lst, t_sh *new)
 
 t_redir	*creat_node(char *str, t_redir *node, t_env **env)
 {
+	bool	logic;
+
+	logic = false;
 	if (node->tp == her_doc)
 	{
 		node->file_name = NULL;
-		str = rand_rot13(str);
-		node->fd_her = open_here(str, env);
-		pi_processing_here(node->fd_her, str, env);
+		str = diformer(str, &logic);
+		node->fd_her = open_here(str, env, NULL, &logic);
 	}
 	else
 	{

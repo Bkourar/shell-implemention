@@ -23,7 +23,7 @@ int	str_cmp(char *buf, char *limiter)
 	return (0);
 }
 
-void	pi_processing_here(int	fd, char *dilemiter, t_env **env)
+void	pi_processing_here(int	fd, char *dilemiter, t_env **env, bool *b)
 {
 	char	*buff;
 	pid_t	id;
@@ -37,35 +37,36 @@ void	pi_processing_here(int	fd, char *dilemiter, t_env **env)
 		{
 			buff = NULL;
 			buff = readline("> ");
-			if (!buff)
+			if (buff == NULL && dilemiter[0] == '\0')
 				break ;
 			if (str_cmp(buff, dilemiter) == 1)
 				break ;
-			if (!check_quote(dilemiter) && check_dolar(buff))
-				buff = pi_processing_redirect(buff, env);
-			write(fd, buff, long_nl(buff, '\n') + 1);
+			if (b == false)
+				buff = join_arg(pi_processing_expand(buff, env, false));
+			write(fd, buff, long_nl(buff, '\n') + 1), write(fd, "\n", 1);
 			free(buff);
 		}
 	}
 	else if (id == -1)
 		(perror("Fork failed"), exit(EXIT_FAILURE));
-	(wait(NULL), ft_signal(), close(fd));
+	(wait(NULL), ft_signal());
 }
 
 void	run_heredoc(char *arg, int i, t_tk **l)
 {
 	char	*dilemter;
+	bool	logic;
 	int		fd;
 	int		j;
 
+	logic = false;
 	if (arg[i] == '<' && arg[i + 1] == '<')
 	{
 		j = i;
-		dilemter = get_dilemter(arg, &i);
+		dilemter = get_dilemter(arg, &i, &logic);
 		if (!dilemter)
 			write(2, "allocation fail\n", 17), exit(2);
-		dilemter = rand_rot13(dilemter);
-		fd = open_here(dilemter, &(*l)->env);
+		fd = open_here(dilemter, &(*l)->env, NULL, &logic);
 		if (fd == -1)
 			perror("OPEN: ");
 	}
@@ -77,7 +78,7 @@ void	run_heredoc(char *arg, int i, t_tk **l)
 }
 
 
-char	*get_dilemter(char *inf, int *j)
+char	*get_dilemter(char *inf, int *j, bool *logic)
 {
 	char	*stock;
 	int		i;
@@ -92,6 +93,6 @@ char	*get_dilemter(char *inf, int *j)
 		*j += 1;
 	}
 	stock[i] = '\0';
-	// stock = diformer(stock);
+	stock = diformer(stock, logic);
 	return (stock);
 }

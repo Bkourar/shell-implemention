@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+void	change_directory(t_sh *cmd, t_env *env);
+void	cd_home(t_env *env);
+void	change_cwd(char *c_pth, t_env *env);
+
+void	change_directory(t_sh *cmd, t_env *env)
+{
+	if (!cmd->args[1])
+		cd_home(env);
+	else
+		change_cwd(cmd->args[1], env);
+}
+
 void	cd_home(t_env *env)
 {
 	while (env)
@@ -26,16 +38,9 @@ void	change_cwd(char *c_pth, t_env *env)
 	}
 	else if (chdir(c_pth) == -1)
 	{
-		printf("cd: %s NO such file or directory\n", c_pth);
+		ft_putstr_x("cd: ", c_pth, "NO such file or directory\n", 2);
 	}
-	ft_strlcpy(cwd , ft_get_cwd(), PATH_MAX);
+	ft_strlcpy(cwd, ft_get_cwd(), PATH_MAX);
 	ft_set_it(env, "OLDPWD", old_pwd);
 	ft_set_it(env, "PWD", cwd);
-}
-void	change_directory(t_sh *cmd, t_env *env)
-{
-	if (!cmd->args[1])
-		cd_home(env);
-	else
-		change_cwd(cmd->args[1], env);
 }

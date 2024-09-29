@@ -74,14 +74,6 @@ char	*pi_processing_redirect(char *in, t_env **env)
 	head = NULL;
 	if (check_empty(in))
 		return (ft_strdup("\0"));
-	// if ()
-	// {
-	// 	puts("delimter");
-	// 	// correct = pi_process_re_heredoc(in, &head);
-	// 	// if (!correct)
-	// 	// 	(write(2, "faile allocation\n", 18), exit(1));
-	// 	// return (free_dir(&head), correct);
-	// }
 	head = analyse_input(in, &head);
 	spl = mise_ajour_input(&head);
 	if (!spl)

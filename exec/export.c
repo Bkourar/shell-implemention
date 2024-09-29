@@ -58,7 +58,10 @@ int	valid_x_arg(char *arg)
 
 	i = 0;
 	if (arg[i] != '_' && ft_isalpha(arg[i]) == 0)
-		return (printf("export: %s: not a valid identifier\n", arg), 0);
+	{
+		return (ft_putstr_x("export: ",
+				arg, ": not a valid identifier\n", 2), 0);
+	}
 	while (arg[i] && (arg[i] == '_' || ft_isalnum(arg[i])))
 		i++;
 	if (arg[i] == '=' || (arg[i] == '+' && arg[i + 1] && arg[i + 1] == '='))
@@ -66,7 +69,10 @@ int	valid_x_arg(char *arg)
 	if (arg[i] == '\0')
 		return (1);
 	else if (arg[i] != '_' && ft_isalpha(arg[i]) == 0)
-		return (printf("export: %s: not a valid identifier\n", arg), 0);
+	{
+		return (ft_putstr_x("export: ",
+				arg, ": not a valid identifier\n", 2), 0);
+	}
 	return (1);
 }
 
@@ -77,12 +83,12 @@ void	exp_no_args(t_env *env)
 	tmp = env;
 	while (tmp)
 	{
-		printf("declare -x %s", tmp->var);
+		ft_putstr_x("declare -x ", tmp->var, NULL, 1);
 		if (tmp->value != NULL)
 		{
-			printf(" =\"%s\"", tmp->value);
+			ft_putstr_x(tmp->value, NULL, NULL, 1);
 		}
-		printf("\n");
+		ft_putstr_x("\n", NULL, NULL, 1);
 		tmp = tmp->next;
 	}
 }

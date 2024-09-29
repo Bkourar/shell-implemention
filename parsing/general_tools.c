@@ -88,14 +88,13 @@ char	*join_path(char const *s1, char const *s2)
 		return (ft_strdup(s2));
 	else if (!s2)
 		return (ft_strdup(s1));
-	string = (char *)malloc(_ft_strlen(s1) + _ft_strlen(s2) + 3);
+	string = (char *)malloc(_ft_strlen(s1) + _ft_strlen(s2) + 2);
 	if (!string)
 		return (free((char *)s2), NULL);
 	i = 0;
 	while (s1[i])
 		string[j++] = s1[i++];
 	string[j++] = '/';
-	string[j++] = '.';
 	i = 0;
 	while (s2[i])
 		string[j++] = s2[i++];

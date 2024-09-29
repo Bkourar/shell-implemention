@@ -2,10 +2,10 @@
 # define MINISHELL_H
 
 # include "structs.h"
-# include "token.h"
-# include "expand.h"
 # include "signal.h"
-# include <sys/types.h> 
+# include "expand.h"
+# include "token.h"
+# include <sys/types.h>
 # include <sys/wait.h>
 # include <limits.h>
 # include <string.h>
@@ -25,7 +25,8 @@ t_sh	*parse_line(char *line, t_sh **cmd, t_env **env);
 int		check_dolar(char *str);
 char	*get_dolar(char *str);
 int		is_alpha(char c);
-
+char	*check_and_dup(char c);
+void    free_shell_list(t_sh *cmds);
 // 1 : processing parte
 int		pi_processing_err_3(t_tk **l, t_tk **ps, char c0, char c1, char *del);
 int		pi_processing_err_1(t_tk **f, t_tk **l, char *del);
@@ -55,10 +56,8 @@ void	synatx_quotes(char c);
 void	print_errors();
 int		check_redir(char const *str);
 char	loop(t_tk **tmp, ee type, int *j);
-
-
 int		check_expend(char c1, char c2);
-void	*ft_calloc(size_t nbr, size_t size);
+// void	*ft_calloc(size_t nbr, size_t size);
 int		is_numeric(char c);
 void	change_space(char *c1, char *c2, int *j, int *i);
 char	*join_whitout_quote(char const *s1, char const *s2);
@@ -75,7 +74,7 @@ t_redir	*creat_node(char *str, t_redir *node, t_env **env);
 t_sh	*creat_commandline(t_sh **node, char *str, int *i);
 int		check_hash(char *str, int *i);
 void	change_dbq(char *c1, char *c2, int *j, int *i);
-void	pi_processing_here(int	fd, char *dilemiter, t_env **env);
+void	pi_processing_here(int	fd, char *dilemiter, t_env **env, bool *b);
 char	*restory_cmd(char *src);
 void	run_heredoc(char *arg, int i, t_tk **l);
 size_t	_ft_strlen(const char *theString);
@@ -87,31 +86,31 @@ void	ft_lstadd_back_msh(t_sh **lst, t_sh *new);
 void	free_msh(t_sh **likend);
 
 /*#################   checker   ###################*/
-int	check_pipe(char *str, int j, int i);
-int	check_dir(char c);
-int	check_type(t_e i);
-int	isquote(char c);
+int		check_pipe(char *str, int j, int i);
+int		check_dir(char c);
+int		check_type(t_e i);
+int		isquote(char c);
 /*#################   get_funtion   ###############*/
 int		replace_space(char *dst, int *i, char *src);
 char	*ft_strncpy(char *dst, char *src, int index);
 //open file
-int		open_here(char *del, t_env **env);
+int		open_here(char *del, t_env **env, char *c, bool *b);
 char	*rand_rot13(char *path);
 char	*ft_strjoin(char const *s1, char const *s2);
 
 ////here_dock
 char	*join_path(char const *s1, char const *s2);
 int		count_word(char const *string, char c);
-char	*get_dilemter(char *inf, int *j);
-
-/*################  exec   ################*/
+char	*get_dilemter(char *inf, int *j, bool *logic);
 void	ft_start_exec(t_sh **cmd, t_env **env);
+void	main_exec(t_data *dt, t_sh *cmd, t_env *env, char **path);
 void	execute_builtin(t_sh *cmd, t_env *env);
 int		its_bult(char *cmd);
 void	handle_redirections(t_redir *redirections);
 void	build_echo(char **args, int i);
 void	ft_pwd(void);
 void	ft_unset(t_sh *cmd, t_env *env);
+void	ft_exit(t_sh *cmd);
 void	build_export(t_sh *cmd, t_env *env);
 void	ft_set_it(t_env *env, const char *var, const char *new_value);
 char	*ft_get_cwd();
@@ -120,26 +119,27 @@ void	change_directory(t_sh *cmd,t_env *env);
 int		ft_hrb(int flag, int stt);
 
 /*################   env   ################*/
-t_env	*parse_env(char **envir);
-char	**env_to_arr(t_env *env);
-char	**environnement_pth(t_env *e);
-char	*get_path(char **arr, char *cmd);
-void	ft_del_one(t_env *head, const char *var);
-t_env	*env_lstnew(const char *var, const char *value);
-void	env_lst_back(t_env **lst, t_env *new);
+t_env		*parse_env(char **envir);
+char		**env_to_arr(t_env *env, int i);
+char		**environnement_pth(t_env *e);
+char		*get_path(char **arr, char *cmd);
+void		ft_del_one(t_env *head, const char *var);
+t_env		*env_lstnew(const char *var, const char *value);
+void		env_lst_back(t_env **lst, t_env *new);
+
 
 /*################   more   ################*/
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strchr(const char *s, int c);
-char	*exec_join(char const *s1, char const *s2);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
-int		ft_isalnum(char c);
-int		ft_isalpha(char c);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-void	free_shell_list(t_sh *cmds);
-char	*check_and_dup(char c);
-
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
+char		*ft_strchr(const char *s, int c);
+char		*exec_join(char const *s1, char const *s2);
+size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t		ft_strlcat(char *dst, const char *src, size_t dstsize);
+int			ft_isalnum(char c);
+int			ft_isalpha(char c);
+char		*ft_substr(char const *s, unsigned int start, size_t len);
+void		ft_perror(char *str, int st);
+void		ft_putstr_x(char *s1,char *s2, char *s3, int fd);
+long long	atoll_x(char *str);
 
 
 #endif

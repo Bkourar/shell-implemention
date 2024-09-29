@@ -42,26 +42,28 @@ char	*restory_cmd(char *src)
 	return (ft_strdup(stock));
 }
 
-int	open_here(char *del, t_env **env)
+int	open_here(char *del, t_env **env, char *c, bool *b)
 {
-	char	*c;
 	int		fd = 0;
 
-	c = rand_rot13(del);
+	if (fd == 0 && del[0] != '\0')
+		c = ft_strdup(del);
+	else
+		c = ft_strdup("eof");
+	c = rand_rot13(c);
 	c = join_path("/tmp", c);
 	if (access(c, F_OK) == 0)
 	{
 		c[0] = 'a';
 		c[4] = 'm';
-		c[5] = 'z';
-		open_here(c, env);
+		open_here(del, env, c, b);
 	}
 	else
 	{
 		fd = open(c, O_CREAT | O_WRONLY , 0777);
 		if (fd == -1)
 			perror("OPEN: ");
-		pi_processing_here(fd, del, env), close(fd);
+		pi_processing_here(fd, del, env, b), close(fd);
 		fd = open(c, O_RDONLY, 0444);
 	}
 	if (unlink(c) == -1)

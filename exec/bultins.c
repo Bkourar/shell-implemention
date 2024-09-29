@@ -1,5 +1,8 @@
 #include "minishell.h"
 
+int		its_bult(char *cmd);
+void	execute_builtin(t_sh *cmd, t_env *env);
+
 int	its_bult(char *cmd)
 {
 	if (!ft_strncmp(cmd, "echo", 5))
@@ -12,8 +15,8 @@ int	its_bult(char *cmd)
 		return (11);
 	else if (!ft_strncmp(cmd, "env", 4))
 		return (11);
-	// else if (!ft_strncmp(cmd, "exit", 5))
-		// return (11);
+	else if (!ft_strncmp(cmd, "exit", 5))
+		return (11);
 	else if (!ft_strncmp(cmd, "unset", 6))
 		return (11);
 	return (27);
@@ -21,8 +24,6 @@ int	its_bult(char *cmd)
 
 void	execute_builtin(t_sh *cmd, t_env *env)
 {
-	// (void)env;
-
 	if (!ft_strncmp(cmd->args[0], "echo", 5))
 		build_echo(cmd->args, 1);
 	else if (!ft_strncmp(cmd->args[0], "cd", 3))
@@ -33,8 +34,8 @@ void	execute_builtin(t_sh *cmd, t_env *env)
 		ft_pwd();
 	else if (!ft_strncmp(cmd->args[0], "env", 4))
 		ft_show_env(env);
-	// else if (!ft_strncmp(cmd->args[0], "exit", 5))
-		// ft_exit(cmd, env);
+	else if (!ft_strncmp(cmd->args[0], "exit", 5))
+		ft_exit(cmd);
 	else if (!ft_strncmp(cmd->args[0], "unset", 6))
 		ft_unset(cmd, env);
 }

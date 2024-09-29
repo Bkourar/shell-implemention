@@ -1,6 +1,9 @@
 #include "minishell.h"
 
-char	*ft_get_cwd()
+char	*ft_get_cwd(void);
+void	ft_pwd(void);
+
+char	*ft_get_cwd(void)
 {
 	static char	s_pwd[PATH_MAX];
 	char		tmp[PATH_MAX];
