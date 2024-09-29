@@ -1,4 +1,4 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 int	valid_exit(char *nbr)
 {
@@ -23,7 +23,7 @@ int	ft_hrb(int flag, int stt)
 	return (x);
 }
 
-void	ft_exit(m_sh *cmd)
+void	ft_exit(t_sh *cmd)
 {
 	if (!cmd->args[1])
 	{

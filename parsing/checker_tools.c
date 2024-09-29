@@ -28,9 +28,9 @@ int	check_pipe(char *str, int j, int i)
 	return (0);
 }
 
-int	check_heredoc(t_sh **lst)
+int	check_heredoc(t_tk **lst)
 {
-	t_sh	*tp;
+	t_tk	*tp;
 	int		i;
 
 	i = 0;
@@ -44,7 +44,7 @@ int	check_heredoc(t_sh **lst)
 	return (i);
 }
 
-int	check_herepipe(t_sh **l)
+int	check_herepipe(t_tk **l)
 {
 	int		b1;
 	int		b2;
@@ -73,9 +73,9 @@ int	check_herepipe(t_sh **l)
 	return (3);
 }
 
-int	check_pos_here(t_sh **lst, t_sh **breaking)
+int	check_pos_here(t_tk **lst, t_tk **breaking)
 {
-	t_sh	*l;
+	t_tk	*l;
 	int		i;
 
 	l = (*lst);

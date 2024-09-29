@@ -40,39 +40,3 @@ int	count_wd(char **spliting)
 		i++;
 	return (i);
 }
-
-char	*check_sq(char *str)
-{
-	char	stack[255];
-	int		i;
-	int		j;
-	int		l;
-
-	i = -1;
-	j = 0;
-	while (str[++i])
-	{
-		if (str[i] == '#')
-		{
-			j = 1;
-			break ;
-		}
-	}
-	i = -1;
-	l = 0;
-	while (j == 1 && str[++i])
-	{
-		if (str[i] != '#' && str[i] != '\'')
-			stack[l++] = str[i];
-	}
-	stack[l] = '\0';
-	return (free(str), ft_strdup(stack));
-}
-
-void	change_hastag(char *c1, char *c2, int *j, int *i)
-{
-	*c1 = '\'';
-	*c2 = '#';
-	*j += 2;
-	*i += 1;
-}

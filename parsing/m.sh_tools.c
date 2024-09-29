@@ -16,9 +16,9 @@ void	ft_lstadd_redir(t_redir **lst, t_redir *new)
 	temp->next = new;
 }
 
-void	ft_lstadd_back_msh(m_sh **lst, m_sh *new)
+void	ft_lstadd_back_msh(t_sh **lst, t_sh *new)
 {
-	m_sh	*temp;
+	t_sh	*temp;
 
 	if (!(*lst))
 	{
@@ -34,46 +34,30 @@ void	ft_lstadd_back_msh(m_sh **lst, m_sh *new)
 
 t_redir	*creat_node(char *str, t_redir *node, t_env **env)
 {
-	// int		j;
-
-	// if (check_dolar(str))
-	// 	str = pi_process_expend(str, env);
-	// else
-	// {
-	// 	if (check_quote(str) != 0)
-	// 		str = removed(str);
-	// }
-	// if (!str)
-	// 	(*node)->args[i] = ft_strdup("hello");///here is probelm exec
 	if (node->tp == her_doc)
 	{
 		node->file_name = NULL;
-		node->fd_her = open_here(str);
-		pi_processing_here(node->fd_her, rand_rot13(str), env);
+		str = rand_rot13(str);
+		node->fd_her = open_here(str, env);
+		pi_processing_here(node->fd_her, str, env);
 	}
 	else
 	{
-		node->file_name = str;
+		if (str == NULL)
+			node->file_name = NULL;
+		else
+			node->file_name = str;
 		node->fd_her = -1;
 	}
 	node->next = NULL;
 	return (node);
 }
 
-m_sh	*creat_commandline(m_sh **node, char *str, int *i)
+t_sh	*creat_commandline(t_sh **node, char *str, int *i)
 {
-	// char	**spl;
-	// int			j;
-
-	// spl = pi_processing_expand(str, env, false);
-	// j = -1;
-	// while (spl[++j])
-	// {
-		(*node)->args[*i] = ft_strdup(str);
-		if (!(*node)->args[*i])
-			return (NULL);
-		// *i += 1;
-	// }
+	(*node)->args[*i] = ft_strdup(str);
+	if (!(*node)->args[*i])
+		return (NULL);
 	return (*node);
 }
 

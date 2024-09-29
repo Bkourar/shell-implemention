@@ -1,4 +1,4 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 char	*ft_get_cwd()
 {

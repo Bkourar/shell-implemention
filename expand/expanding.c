@@ -1,4 +1,4 @@
-#include "expand.h"
+#include "minishell.h"
 
 
 t_exp	*ft_lstlast_exp(t_exp **lst)

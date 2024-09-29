@@ -1,6 +1,4 @@
 #include "minishell.h"
-#include "minishell1.h"
-
 
 int	check_dir(char c)
 {
@@ -18,9 +16,7 @@ int	check_type(t_e i)
 
 int	isquote(char c)
 {
-	if (c == '\"')
-		return (1);
-	if (c == '\'')
+	if (c == '\"' || c == '\'')
 		return (1);
 	return (0);
 }
@@ -41,9 +37,3 @@ int check_op(char c)
 	return (0);
 }
 
-int check_op1(ee i)
-{
-	if (i == input || i == output || i == append || i == heredoc)
-		return (1);
-	return (0);
-}

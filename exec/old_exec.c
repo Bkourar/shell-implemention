@@ -1,7 +1,7 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 // /*
-void	ft_start_exec(m_sh **cmd, t_env **env)
+void	ft_start_exec(t_sh **cmd, t_env **env)
 {
 	int	fd[2];
 	int	input_fd = 0;
@@ -34,7 +34,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 			write(2, "pipe", 5);
 			exit(1);
 		}
-
+		signal_child();
 		pids[i] = fork();
 		if (pids[i] < 0)
 		{
@@ -98,6 +98,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 		}
 		i++;
 	}
+	ft_signal();
 	free(pids);
 	dup2(std_in, 0); // Restore original stdin
 	close(std_in);
@@ -129,7 +130,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 // } t_data;
 
 
-// void init_d(t_data *dt, m_sh *cmd)
+// void init_d(t_data *dt, t_sh *cmd)
 // {
 // 	dt->cnt = ft_lstsize(cmd);
 // 	dt->input_fd = 0;
@@ -144,7 +145,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 // 	}
 // }
 
-// void handle_child_process(t_data *data, m_sh **cmd, char *pth, t_env *env)
+// void handle_child_process(t_data *data, t_sh **cmd, char *pth, t_env *env)
 // {
 // 	if (data->i > 0)
 // 	{
@@ -177,7 +178,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 // 	}
 // }
 
-// void handle_parent_process(t_data *data, m_sh **cmd)
+// void handle_parent_process(t_data *data, t_sh **cmd)
 // {
 // 	if (data->i > 0)
 // 		close(data->input_fd);
@@ -207,7 +208,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 
 
 
-// void handle_piping_and_forking(t_data *data, m_sh **cmd, t_env **env)
+// void handle_piping_and_forking(t_data *data, t_sh **cmd, t_env **env)
 // {
 // 	char	*pth;
 
@@ -234,12 +235,12 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 // 	}
 // }
 
-// void	main_exec(t_data *dt, m_sh *cmd, t_env *env)
+// void	main_exec(t_data *dt, t_sh *cmd, t_env *env)
 // {
 // 	char	*path;
 // }
 
-// // // void ft_start_exec(m_sh **cmd, t_env **env)
+// // // void ft_start_exec(t_sh **cmd, t_env **env)
 // // // {
 // // // 	t_data	data;
 // // // 	init_d(&data, cmd);
@@ -261,7 +262,7 @@ void	ft_start_exec(m_sh **cmd, t_env **env)
 // // // 	close(data.std_out);
 // // // }
 
-// void	ft_execution(m_sh **cmd, t_env **env)
+// void	ft_execution(t_sh **cmd, t_env **env)
 // {
 // 	t_data *dt;
 

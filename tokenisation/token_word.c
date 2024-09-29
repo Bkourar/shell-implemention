@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	up_grade(t_sh **n, char *string)
+void	up_grade(t_tk **n, char *string)
 {
 	if (!ft_strcmp("<<", string))
 		(*n)->type = heredoc;
@@ -26,10 +26,14 @@ void	up_grade(t_sh **n, char *string)
 		(*n)->type = word;
 }
 
-void up_date(char *str, t_sh **lst, t_env **env)
+void up_date(char *str, t_tk **lst, t_env **env)
 {
-	t_sh	*node;
+	t_tk	*node;
 
+	if (!str)
+	{
+		printf("is NUALL");
+	}
 	node = ft_lstnew(str);
 	node->stat = ft_strdup("general");
 	if (!node->stat)
@@ -41,30 +45,32 @@ void up_date(char *str, t_sh **lst, t_env **env)
 	ft_lstadd_back_tsh(&(*lst), node);
 }
 
-void	take_str(char *string, int *i, t_sh **node, t_env **env)
+static void	take_str(char *str, int *i, t_tk **node, t_env **env)
 {
-	if (!string)
+	if (!str)
 		write(2, "fail allocated\n", 16), exit(2);
-	if (!ft_strcmp("<<", string))
-		up_date(string, node, env), *i += 2;
-	else if (!ft_strcmp(">>", string))
-		up_date(string, node, env), *i += 2;
-	else if (!ft_strcmp("<", string))
-		up_date(string, node, env), *i += 1;
-	else if (!ft_strcmp(">", string))
-		up_date(string, node, env), *i += 1;
-	else if (!ft_strcmp("\"", string))
-		up_date(string, node, env), *i += 1;
-	else if (!ft_strcmp("'", string))
-		up_date(string, node, env), *i += 1;
-	else if (!ft_strcmp("$", string))
-		up_date(string, node, env), *i += 1;
-	else if (!ft_strcmp("|", string))
-		up_date(string, node, env), *i += 1;
+	if (!ft_strcmp("<<", str))
+		up_date(str, node, env), *i += 2;
+	else if (!ft_strcmp(">>", str))
+		up_date(str, node, env), *i += 2;
+	else if (!ft_strcmp("<", str))
+		up_date(str, node, env), *i += 1;
+	else if (!ft_strcmp(">", str))
+		up_date(str, node, env), *i += 1;
+	else if (isquote(str[*i]))
+	{
+		up_date(check_and_dup(str[*i]), node, env);
+		up_date(dup_quote(str, i, str[*i]), node, env);
+		up_date(check_and_dup(str[*i]), node, env), *i += 1;
+	}
+	else if (!ft_strcmp("$", str))
+		up_date(str, node, env), *i += 1;
+	else if (!ft_strcmp("|", str))
+		up_date(str, node, env), *i += 1;
 	else
 	{
-		up_date(string, node, env);
-		*i += ft_strlen(string);
+		up_date(str, node, env);
+		*i += ft_strlen(str);
 	}
 }
 
@@ -90,7 +96,7 @@ char	*get_word(char	*str)
 	return (stock);
 }
 
-void	pars_word(char *input, t_sh **l, t_env **env)
+void	pars_word(char *input, t_tk **l, t_env **env)
 {
 	int		i = 0;
 
@@ -106,10 +112,10 @@ void	pars_word(char *input, t_sh **l, t_env **env)
 			take_str(ft_strdup(">"), &i, l, env);
 		else if (input[i] == '|')
 			take_str(ft_strdup("|"), &i, l, env);
-		else if (input[i] == '\"')
-			take_str(ft_strdup("\""), &i, l, env);
-		else if (input[i] == '\'')
-			take_str(ft_strdup("'"), &i, l, env);
+		else if (isquote(input[i]) && input[i + 1] != '\0')
+			take_str(input, &i, l, env);
+		else if (isquote(input[i]) && input[i + 1] == '\0')
+			take_str(check_and_dup(input[i]), &i, l, env);
 		else if (input[i] == '$')
 			take_str(ft_strdup("$"), &i, l, env);
 		else

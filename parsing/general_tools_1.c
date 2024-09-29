@@ -57,32 +57,6 @@ int	check_quote(char *str)
 	return (0);
 }
 
-char	*removed(char *str, char c, int b, t_env **env)
-{
-	char		**spl;
-	int			i;
-	int			j;
-
-	spl = ft_split(str, c);
-	j = count_wd(spl);
-	free(str);
-	str = NULL;
-	i = -1;
-	while (b == 0 && ++i < j)
-	{
-		str = ft_strjoin(str, spl[i]);
-		if (!str)
-			write(2, "fail allocation\n", 17), exit(1);
-	}
-	while (b == 1 && ++i < j)
-	{
-		str = ft_strjoin(str, expanding(spl[i], env));
-		if (!str)
-			write(2, "fail allocation\n", 17), exit(1);
-	}
-	return (free(spl), str);
-}
-
 char	*get_dolar(char *str)
 {
 	int		i;

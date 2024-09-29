@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	copy_input(char *src, int *i, t_exp **lst)
+void	copy_expanse(char *src, int *i, t_dir **lst)
 {
 	char	*dst;
 	int		j;
@@ -23,11 +23,11 @@ void	copy_input(char *src, int *i, t_exp **lst)
 		dst[j++] = src[*i];
 		*i += 1;
 	}
-	(dst[j] = '\0', premission(&chmod, 4, 0, 0));
-	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+	(dst[j] = '\0', owner_premt(&chmod, 4, 0, 0));
+	(ft_lstadd_back_dir(lst, upgrade_redirect(dst, &chmod, 0)), free(dst));
 }
 
-void	copy_whit_sq(char *src, int *i, t_exp **lst)
+void	copy_whit_singlq(char *src, int *i, t_dir **lst)
 {
 	char	*dst;
 	int		j;
@@ -46,13 +46,13 @@ void	copy_whit_sq(char *src, int *i, t_exp **lst)
 		*i += 1;
 	}
 	dst[j++] = '\'';
-	(dst[j] = '\0', premission(&chmod, 0, 0, 0));
-	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+	(dst[j] = '\0', owner_premt(&chmod, 0, 2, 1));
+	(ft_lstadd_back_dir(lst, upgrade_redirect(dst, &chmod, 0)), free(dst));
 	if (src[*i] == '\'')
-		*i += 1; 
+		*i += 1;
 }
 
-void	copy_whit_dq(char *src, int *i, t_exp **lst)
+void	copy_whit_doublq(char *src, int *i, t_dir **lst)
 {
 	char	*dst;
 	int		j;
@@ -71,13 +71,13 @@ void	copy_whit_dq(char *src, int *i, t_exp **lst)
 		*i += 1;
 	}
 	dst[j++] = '\"';
-	(dst[j] = '\0', premission(&chmod, 4, 0, 0));
-	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+	(dst[j] = '\0', owner_premt(&chmod, 4, 2, 1));
+	(ft_lstadd_back_dir(lst, upgrade_redirect(dst, &chmod, 0)), free(dst));
 	if (src[*i] == '\"')
 		*i += 1;
 }
 
-void	copy_standard(char *src, int *i, t_exp **lst)
+void	copy_std_dfl(char *src, int *i, t_dir **lst)
 {
 	char	*dst;
 	int		j;
@@ -102,28 +102,26 @@ void	copy_standard(char *src, int *i, t_exp **lst)
 			*i += 1;
 		}
 	}
-	(dst[j] = '\0', premission(&chmod, 0, 0, 0));
-	(ft_lstadd_back_texp(lst, upgrade_input(dst, false, &chmod)), free(dst));
+	(dst[j] = '\0', owner_premt(&chmod, 0, 2, 0));
+	(ft_lstadd_back_dir(lst, upgrade_redirect(dst, &chmod, 0)), free(dst));
 }
 
-t_exp	*update_input(char *in, t_exp **lst)
+t_dir	*analyse_input(char *in, t_dir **lst)
 {
-	t_exp	*head;
+	t_dir	*head;
 	int		i;
 
 	i = 0;
 	while (in[i])
 	{
 		if (valid_condtion(in, i))
-			copy_input(in, &i, lst);
+			copy_expanse(in, &i, lst);
 		else if (in[i] == '\'')
-			copy_whit_sq(in, &i, lst);
+			copy_whit_singlq(in, &i, lst);
 		else if (in[i] == '\"')
-			copy_whit_dq(in, &i, lst);
-		else if (white_sp(in[i]))
-			skip_wspace(in, &i, lst);
+			copy_whit_doublq(in, &i, lst);
 		else
-			copy_standard(in, &i, lst);
+			copy_std_dfl(in, &i, lst);
 	}
 	return (head = (*lst), head);
 }

@@ -1,5 +1,4 @@
 #include "minishell.h"
-#include "minishell1.h"
 
 void	put_error(char *str)
 {
@@ -39,7 +38,7 @@ void	print_errors()
 	write(2, "bash: syntax error near unexpected token `newline'\n", 52);
 }
 
-char	loop(t_sh **tmp, ee type, int *j)
+char	loop(t_tk **tmp, ee type, int *j)
 {
 	char c;
 

@@ -1,34 +1,4 @@
-#include "expand.h"
-
-
-void	free_arr(char **arg)
-{
-	int	i;
-
-	if (!arg)
-		return ;
-	if (!(*arg))
-	{
-		free(arg);
-		return ;
-	}
-	i = 0;
-	while (arg[i])
-	{
-		free(arg[i]);
-		i++;
-	}
-	free(arg);
-}
-
-
-int	own_exp(int tp, int sp, int st)
-{
-	int	chmod;
-
-	chmod = tp + sp + st;
-	return (chmod);
-}
+#include "minishell.h"
 
 char	*give_arg(t_env **env, t_exp *l, char ***in)
 {
@@ -87,8 +57,6 @@ int	condition_for_split(t_exp **hd)
 	return (1);
 }
 
-//(((*hd)->prv != NULL && (*hd)->prv->prv != NULL) && (*hd)->prv->prv->set->tp == not_exp && !check_space((*hd)->prv->prv->input))
-
 char	**parse_value(t_exp **hd, t_env **env)
 {
 	char	**spl;
@@ -100,7 +68,7 @@ char	**parse_value(t_exp **hd, t_env **env)
 		if (!ft_strcmp((*hd)->input, tp->var))
 		{
 			if (condition_for_split(&(*hd)))
-				return (puts("here"), spl[0] = give_arg(env, (*hd), &spl), spl[1] = 0, spl);
+				return (spl[0] = give_arg(env, (*hd), &spl), spl[1] = 0, spl);
 			spl = ft_split(tp->value, ' ');
 			if (!spl)
 				write(2, "faile allocation\n", 18), exit(1);
@@ -138,7 +106,6 @@ void	autortion(char **s, t_exp **l, int rwx, bool b)
 		{
 			ft_lstadd_back_texp(l, upgrade_input(" ", b, &k));
 		}
-		
 		j++;
 	}
 }

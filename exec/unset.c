@@ -1,6 +1,6 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
-void ft_unset(m_sh *cmd, t_env *env)
+void ft_unset(t_sh *cmd, t_env *env)
 {
 	t_env	*tmp;
 	int		i;

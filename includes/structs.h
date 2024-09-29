@@ -1,5 +1,5 @@
-#ifndef MINISHELL1_H
-# define MINISHELL1_H
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 /***********  env  *************/
 
@@ -35,7 +35,7 @@ typedef struct s_shell
 	t_redir			*dir;
 	t_env			*env;
 	struct s_shell	*next;
-}					m_sh;
+}					t_sh;
 
 /********* data for parssing ******/
 
@@ -50,7 +50,7 @@ typedef struct command_line
 	t_env				*env;
 	struct command_line	*nx;
 	struct command_line *pv;
-}						t_sh;
+}						t_tk;
 
 
 /*----------------------------------------------------------------------------------------------------*/

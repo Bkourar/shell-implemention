@@ -1,4 +1,4 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 void	ft_perror(char *str, int st)
 {

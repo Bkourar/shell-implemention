@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-t_sh	*ft_lstnew(char *content)
+t_tk	*ft_lstnew(char *content)
 {
-	t_sh	*n_node;
+	t_tk	*n_node;
 
-	n_node = (t_sh *)malloc(sizeof(t_sh));
+	n_node = (t_tk *)malloc(sizeof(t_tk));
 	if (!n_node)
 		return (NULL);
 	n_node->token = ft_strdup(content);
@@ -12,9 +12,9 @@ t_sh	*ft_lstnew(char *content)
 	return (n_node);
 }
 
-void	ft_lstadd_back_tsh(t_sh **lst, t_sh *new)
+void	ft_lstadd_back_tsh(t_tk **lst, t_tk *new)
 {
-	t_sh	*temp;
+	t_tk	*temp;
 
 	if (!(*lst))
 	{
@@ -29,7 +29,7 @@ void	ft_lstadd_back_tsh(t_sh **lst, t_sh *new)
 	new->pv = temp;
 }
 
-void	ft_lstadd_front(t_sh **lst, t_sh *new)
+void	ft_lstadd_front(t_tk **lst, t_tk *new)
 {
 	if (!lst || !new)
 		return ;
@@ -37,9 +37,9 @@ void	ft_lstadd_front(t_sh **lst, t_sh *new)
 	*lst = new;
 }
 
-t_sh	*ft_lstlast(t_sh **lst)
+t_tk	*ft_lstlast(t_tk **lst)
 {
-	t_sh	*tmp;
+	t_tk	*tmp;
 
 	if (!lst)
 		return (NULL);
@@ -53,11 +53,10 @@ t_sh	*ft_lstlast(t_sh **lst)
 	return (tmp);
 }
 
-//modified !!!
-int	ft_lstsize(m_sh *lst)
+int	ft_lstsize(t_sh *lst)
 {
 	int		i;
-	m_sh	*node;
+	t_sh	*node;
 
 	node = lst;
 	i = 0;

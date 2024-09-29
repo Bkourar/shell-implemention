@@ -1,4 +1,4 @@
-#include "expand.h"
+#include "minishell.h"
 
 void	skip_wspace(char *str, int *j, t_exp **lst)
 {

@@ -4,8 +4,8 @@ size_t	ft_strlen(const char *theString)
 {
 	size_t	i;
 
-	if (!theString)// zdt hadi 
-		return (0);// whadi 
+	if (!theString)
+		return (0);
 	i = 0;
 	while (theString[i])
 		i++;
@@ -30,8 +30,8 @@ char	*ft_strdup(char const *src)
 
 	i = 0;
 	j = 0;
-	if (!src)//hadi
-		return (NULL);//hadi
+	if (!src)
+		return (NULL);
 	destion = (char *)malloc(_ft_strlen(src) + 1);
 	if (!destion)
 		return (NULL);
@@ -67,7 +67,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (free((char *)s1), string);
 }
 
-void	complete_type(t_sh **lst, int type)
+void	complete_type(t_tk **lst, int type)
 {
 	if (type == 1)
 		(*lst)->type = err;
@@ -88,13 +88,14 @@ char	*join_path(char const *s1, char const *s2)
 		return (ft_strdup(s2));
 	else if (!s2)
 		return (ft_strdup(s1));
-	string = (char *)malloc(_ft_strlen(s1) + _ft_strlen(s2) + 2);
+	string = (char *)malloc(_ft_strlen(s1) + _ft_strlen(s2) + 3);
 	if (!string)
 		return (free((char *)s2), NULL);
 	i = 0;
 	while (s1[i])
 		string[j++] = s1[i++];
 	string[j++] = '/';
+	string[j++] = '.';
 	i = 0;
 	while (s2[i])
 		string[j++] = s2[i++];

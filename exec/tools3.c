@@ -1,6 +1,6 @@
-// #include "../prs/minishell.h"
+// #include "minishell.h"
 
-// char	*execve_path(t_env *env, m_sh *cmd)
+// char	*execve_path(t_env *env, t_sh *cmd)
 // {
 // 	char	*pth;
 

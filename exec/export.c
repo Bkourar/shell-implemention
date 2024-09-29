@@ -1,4 +1,4 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 void	ft_bmaz(char *var, char *val, t_env *env, int flag)
 {
@@ -87,7 +87,7 @@ void	exp_no_args(t_env *env)
 	}
 }
 
-void	build_export(m_sh *cmd, t_env *env)
+void	build_export(t_sh *cmd, t_env *env)
 {
 	int	i;
 

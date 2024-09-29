@@ -1,4 +1,4 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 t_env	*env_lstnew(const char *var, const char *value)
 {

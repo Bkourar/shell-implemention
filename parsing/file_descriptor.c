@@ -42,20 +42,55 @@ char	*restory_cmd(char *src)
 	return (ft_strdup(stock));
 }
 
-int	open_here(char *del)
+int	open_here(char *del, t_env **env)
 {
-	static char	*c;
-	int			fd;
+	char	*c;
+	int		fd = 0;
 
 	c = rand_rot13(del);
 	c = join_path("/tmp", c);
-	fd = open(c, O_CREAT | O_WRONLY, 777);
-	if (fd == -1)
-		perror("OPEN: ");
+	if (access(c, F_OK) == 0)
+	{
+		c[0] = 'a';
+		c[4] = 'm';
+		c[5] = 'z';
+		open_here(c, env);
+	}
+	else
+	{
+		fd = open(c, O_CREAT | O_WRONLY , 0777);
+		if (fd == -1)
+			perror("OPEN: ");
+		pi_processing_here(fd, del, env), close(fd);
+		fd = open(c, O_RDONLY, 0444);
+	}
 	if (unlink(c) == -1)
 		perror("UNLINK: ");
-	free(c);
-	return (fd);
+	return (free(c), fd);
+}
+
+static int rpl_str_quote(char *dst, int *i, char *str, char c)
+{
+	int	j;
+
+	j = 0;
+	while (str[j])
+	{
+		if (j != 0 && str[j] == c)
+		{
+			j++;
+			break ;
+		}
+		dst[*i] = ' ';
+		*i += 1;
+		j++;
+	}
+	if (str[j - 1] == c)
+	{
+		dst[*i] = ' ';
+		*i += 1;
+	}
+	return (j);
 }
 
 int	replace_space(char *dst, int *i, char *src)
@@ -63,11 +98,14 @@ int	replace_space(char *dst, int *i, char *src)
 	int	j;
 
 	j = 0;
-	while (src[j] && (src[j] == ' ' || src[j] == '\t' || check_dir(src[j])))
+
+	while (src[j] && (white_sp(src[j]) || check_dir(src[j])))
 		j++;
+	if (src[j] == '\'' || src[j] == '\"')
+		return (rpl_str_quote(dst, i, &src[j], src[j]) + j);
 	while (src[j])
 	{
-		if (src[j] == ' ' || check_dir(src[j]))
+		if (white_sp(src[j]) || check_dir(src[j]))
 			break;
 		dst[*i] = ' ';
 		j++;

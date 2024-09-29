@@ -1,4 +1,4 @@
-#include "expand.h"
+#include "minishell.h"
 
 int	valid_expand(char c)
 {
@@ -109,7 +109,7 @@ char	**pi_processing_expand(char *str, t_env **env, bool b)
 			head = head->next;
 		}
 	}
-	return (spl[i] = 0, spl);
+	return (free_exp(&head), spl[i] = 0, spl);
 }
 
 

@@ -1,4 +1,4 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 void	cd_home(t_env *env)
 {
@@ -32,7 +32,7 @@ void	change_cwd(char *c_pth, t_env *env)
 	ft_set_it(env, "OLDPWD", old_pwd);
 	ft_set_it(env, "PWD", cwd);
 }
-void	change_directory(m_sh *cmd, t_env *env)
+void	change_directory(t_sh *cmd, t_env *env)
 {
 	if (!cmd->args[1])
 		cd_home(env);

@@ -1,19 +1,6 @@
 #include "minishell.h"
 
-static int mt_or_only_sp(char *str)
-{
-	if (!str)
-		return (3);
-	while(*str)
-	{
-		if (*str != ' ' && *str != '\t')
-			return (22);
-		str++;
-	}
-	return (3);
-}
-
-t_sh	*parse_commands_2(t_sh **n, char const *string)
+t_tk	*parse_commands_2(t_tk **n, char const *string)
 {
 	if (!ft_strcmp("<", string))
 		(*n)->type = input;
@@ -40,14 +27,14 @@ t_sh	*parse_commands_2(t_sh **n, char const *string)
 	return (*n);
 }
 
-t_sh	*parse_commands_1(char const *st, t_env **env)
+t_tk	*parse_commands_1(char const *st, t_env **env)
 {
-	t_sh	*new;
+	t_tk	*new;
 
 	new = NULL;
 	if (!check_op(st[0]) && (st[1] == '\0' || check_redir(st)))
 	{
-		new = (t_sh *)malloc(sizeof(t_sh));
+		new = (t_tk *)malloc(sizeof(t_tk));
 		if (!new)
 			return(NULL);
 		new->token = ft_strdup(st);
@@ -65,10 +52,10 @@ t_sh	*parse_commands_1(char const *st, t_env **env)
 	return (new);
 }
 
-t_sh	*create_commands(char **words, t_env **env)
+t_tk	*create_commands(char **words, t_env **env)
 {
-	t_sh	*head;
-	t_sh	*node;
+	t_tk	*head;
+	t_tk	*node;
 	int		i;
 
 	if (!words || !*words)
@@ -87,30 +74,27 @@ t_sh	*create_commands(char **words, t_env **env)
 	return (head);
 }
 
-m_sh	*parse_line(char *line, m_sh **cmd, t_env **env)
+t_sh	*pi_processing_pro(char *str, t_sh **node, t_env **env)
 {
-	char	**shell_line;
-	t_sh	*tok;
+	char		**cmd;
+	t_sh		*new;
+	int			i;
 
-	if ((mt_or_only_sp(line)) == 3)
+	new = (t_sh *) malloc(sizeof(t_sh));
+	if (!new)
 		return (NULL);
-	shell_line = ft_split(line, ' ');
-	if (!shell_line)
-		return (write(2, "fail allocation\n", 17), NULL);
-	tok = create_commands(shell_line, env);
-	if (!tok)
-		return (write(2, "fail allocation\n", 17), NULL);
-	tok = pi_processing_cmd(&tok, line);
-	if (!tok)
+	cmd = pi_processing_expand(str, env, false);
+	if (!cmd || !(*cmd))
 		return (NULL);
-	free_tsh(&tok);
-	(*cmd) = pi_processing_data(line, env);
-	// printf("0 : %s\n", (*cmd)->args[0]);
-	// printf("1 : %s\n", (*cmd)->args[1]);
-	// printf("2 : %s\n", (*cmd)->args[2]);
-	// printf("3 : %s\n", (*cmd)->args[3]);
-	// printf("4 : %s\n", (*cmd)->args[4]);
-	// printf("5 : %s\n", (*cmd)->args[5]);
-	// exit(1);
-	return (*cmd);
+	i = 0;
+	new->args = (char **)malloc(sizeof(char *) * (count_wd(cmd) + 1));
+	if (!new->args)
+		return (NULL);
+	while (cmd[i])
+	{
+		new = creat_commandline(&new, cmd[i], &i);
+		i++;
+	}
+	new->args[i] = 0;
+	return (new->dir = (*node)->dir, new->next = NULL, new);
 }

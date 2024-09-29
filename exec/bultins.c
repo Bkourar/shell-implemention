@@ -1,4 +1,4 @@
-#include "../prs/minishell.h"
+#include "minishell.h"
 
 int	its_bult(char *cmd)
 {
@@ -19,7 +19,7 @@ int	its_bult(char *cmd)
 	return (27);
 }
 
-void	execute_builtin(m_sh *cmd, t_env *env)
+void	execute_builtin(t_sh *cmd, t_env *env)
 {
 	// (void)env;
 

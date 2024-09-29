@@ -1,9 +1,9 @@
 #include "minishell.h"
 
-void	free_tsh(t_sh **likend)
+void	free_tsh(t_tk **likend)
 {
-	t_sh	*elem;
-	t_sh	*tmp;
+	t_tk	*elem;
+	t_tk	*tmp;
 
 	if (likend == NULL)
 		return ;
@@ -26,10 +26,10 @@ void	free_tsh(t_sh **likend)
 	free(elem);
 }
 
-void	free_msh(m_sh **likend)
+void	free_msh(t_sh **likend)
 {
-	m_sh	*elem;
-	m_sh	*tmp;
+	t_sh	*elem;
+	t_sh	*tmp;
 
 	if (likend == NULL)
 		return ;
@@ -55,40 +55,51 @@ void	free_msh(m_sh **likend)
 	free(elem);
 }
 
-char	*remove_db_quote(char *str)
+void free_redirections(t_redir *red)
 {
-	char	*cpy;
-	int		i;
-	int		j;
+	t_redir *tmp;
 
-	cpy = (char *)ft_calloc(_ft_strlen(str) * 2, sizeof(char));
-	if (!cpy)
-		return (write(2, "allocation fail\n", 17), NULL);
-	i = 0;
-	j = 0;
-	while (str[i])
+	while (red)
 	{
-		if (str[i] == '\"')
+		tmp = red;
+		red = red->next;
+		free(tmp->file_name);
+		free(tmp);
+	}
+}
+
+void free_shell_list(t_sh *cmds)
+{
+	t_sh	*tmp;
+	int		i;
+
+	while (cmds)
+	{
+		tmp = cmds;
+		cmds = cmds->next;
+		i = 0;
+		while (tmp->args[i])
 		{
-			cpy[j++] = '\'';
+			free(tmp->args[i]);
 			i++;
 		}
-		else
-			cpy[j++] = str[i++];
+		free(tmp->args);
+		free_redirections(tmp->dir);
+		free(tmp);
 	}
-	return (removed(cpy, '\'', 0, NULL));
+	cmds = NULL;
 }
 
-int	is_alpha(char c)
+char	*check_and_dup(char c)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-		return (1);
-	return (0);
-}
+	char	*dst;
 
-int	check_redir(char const *str)
-{
-	if (!ft_strcmp(str, "<<") || !ft_strcmp(str, ">>"))
-		return (1);
-	return (0);
+	dst = NULL;
+	if (c == '\'')
+		dst = ft_strdup("\'");
+	else if (c == '\"')
+		dst = ft_strdup("\'");
+	if (!dst)
+		write(2, "faile allocation\n", 18);
+	return (dst);
 }

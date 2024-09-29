@@ -1,4 +1,4 @@
-#include "expand.h"
+#include "minishell.h"
 
 int	condition_expand(char *str)
 {

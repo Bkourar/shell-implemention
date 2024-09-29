@@ -1,4 +1,4 @@
-#include "expand.h"
+#include "minishell.h"
 
 void	copy_std(char *src, int *i, t_exp **lst)
 {
