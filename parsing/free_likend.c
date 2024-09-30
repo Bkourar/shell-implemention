@@ -90,16 +90,8 @@ void free_shell_list(t_sh *cmds)
 	cmds = NULL;
 }
 
-char	*check_and_dup(char c)
+void	free_buff(char **str)
 {
-	char	*dst;
-
-	dst = NULL;
-	if (c == '\'')
-		dst = ft_strdup("\'");
-	else if (c == '\"')
-		dst = ft_strdup("\'");
-	if (!dst)
-		write(2, "faile allocation\n", 18);
-	return (dst);
+	free(*str);
+	*str = NULL;
 }

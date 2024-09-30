@@ -23,7 +23,7 @@ t_redir	*get_token(char *inf, t_redir **l, t_env **env)
 		return (free(*l), NULL);
 	while (inf[j] && (white_sp(inf[j]) || check_dir(inf[j])))
 		j++;
-	stock = pi_processing_redirect(&inf[j], env);
+	stock = pi_processing_redirect(&inf[j], env, (*l));
 	if (stock == NULL)
 		return (put_ambeg(&inf[j]), creat_node(NULL, (*l), env));
 	return (creat_node(stock, (*l), env));

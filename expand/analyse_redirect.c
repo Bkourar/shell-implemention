@@ -65,13 +65,15 @@ int	check_empty(char *s)
 	return (0);
 }
 
-char	*pi_processing_redirect(char *in, t_env **env)
+char	*pi_processing_redirect(char *in, t_env **env, t_redir *d)
 {
 	t_dir	*head;
 	char	**spl;
 	char	*correct;
 
 	head = NULL;
+	if (d->tp == her_doc)
+		return (in);
 	if (check_empty(in))
 		return (ft_strdup("\0"));
 	head = analyse_input(in, &head);

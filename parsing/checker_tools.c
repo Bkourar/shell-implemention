@@ -55,7 +55,7 @@ int	check_herepipe(t_tk **l)
 	b3 = 0;
 	while ((*l) != NULL)
 	{
-		if ((*l)->type == heredoc)
+		if ((*l)->type == heredoc && ((*l)->nx != NULL))
 			b1 = 1;
 		else if ((*l)->nx != NULL && (*l)->type == Pipe 
 			&& (*l)->nx->type == Pipe)
@@ -82,7 +82,7 @@ int	check_pos_here(t_tk **lst, t_tk **breaking)
 	i = 0;
 	while (l != NULL)
 	{
-		if (l->type == heredoc && l->nx->type == word)
+		if (l->type == heredoc && (l->nx != NULL && l->nx->type == word))
 			i++;
 		if (l == *breaking)
 			return (i);

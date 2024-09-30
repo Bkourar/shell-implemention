@@ -38,11 +38,11 @@ t_dir	*set_data(char *in, t_dir **lst)
 	while (in[i])
 	{
 		if (in[i] == '\'')
-			copy_whit_singlq(in, &i, lst);
+			puts("1"), copy_whit_singlq(in, &i, lst);
 		else if (in[i] == '\"')
-			copy_whit_doublq(in, &i, lst);
+			puts("2"), copy_whit_doublq(in, &i, lst);
 		else
-			std_copy(in, &i, lst);
+			puts("3"), std_copy(in, &i, lst);
 	}
 	return (head = (*lst), head);
 }

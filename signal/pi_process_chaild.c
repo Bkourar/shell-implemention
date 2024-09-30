@@ -3,9 +3,9 @@
 static void	ctrl_nline_quit(int sig)
 {
 	if (sig == SIGINT)
-		printf ("\n");
+		(printf ("\n"), ft_hrb(1, 130));
 	else if (sig == SIGQUIT)
-		printf("Quit: %d\n", sig);
+		(printf("Quit: %d\n", sig), ft_hrb(1, 131));
 }
 
 void	signal_child()

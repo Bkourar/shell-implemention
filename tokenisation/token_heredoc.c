@@ -71,7 +71,7 @@ char	*diformer(char *str, bool *logic)
 
 	head = NULL;
 	if (check_empty(str))
-		return (ft_strdup("\0"));
+		return (*logic = true, ft_strdup("\0"));
 	head = set_data(str, &head);
 	spl = mise_ajour_input(&head);
 	if (!spl)

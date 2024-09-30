@@ -98,3 +98,17 @@ t_sh	*pi_processing_pro(char *str, t_sh **node, t_env **env)
 	new->args[i] = 0;
 	return (new->dir = (*node)->dir, new->next = NULL, new);
 }
+
+char	*check_and_dup(char c)
+{
+	char	*dst;
+
+	dst = NULL;
+	if (c == '\'')
+		dst = ft_strdup("\'");
+	else if (c == '\"')
+		dst = ft_strdup("\'");
+	if (!dst)
+		write(2, "faile allocation\n", 18);
+	return (dst);
+}

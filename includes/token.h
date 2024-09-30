@@ -3,6 +3,7 @@
 
 #include "minishell.h"
 
+char	*ft_itoa(int n);
 char	**ft_split(char const *s, char c);
 t_sh	*pi_processing_data(char *str, t_env **env , t_sh **head);
 char	*pi_processing_dir(char *str, t_sh **h_n, t_env **env);

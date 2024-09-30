@@ -27,6 +27,7 @@ char	*get_dolar(char *str);
 int		is_alpha(char c);
 char	*check_and_dup(char c);
 void    free_shell_list(t_sh *cmds);
+void	free_buff(char **str);
 // 1 : processing parte
 int		pi_processing_err_3(t_tk **l, t_tk **ps, char c0, char c1, char *del);
 int		pi_processing_err_1(t_tk **f, t_tk **l, char *del);

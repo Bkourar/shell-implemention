@@ -73,5 +73,5 @@ void	final_ex(t_sh *cmd, t_env *env, char *pth)
 			ft_putstr_x(cmd->args[0], ": command not found\n", NULL, 2);
 		exit(ft_hrb(1, 127));
 	}
-	ft_signal();
+	ft_signal(1);
 }

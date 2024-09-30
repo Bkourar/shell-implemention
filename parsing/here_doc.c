@@ -5,6 +5,8 @@ int	long_nl(char const *str, char del)
 	int	i;
 
 	i = 0;
+	if (str == NULL)
+		return (i);
 	while (str[i] != del && str[i])
 		i++;
 	return (i);
@@ -15,6 +17,8 @@ int	str_cmp(char *buf, char *limiter)
 	int	a;
 
 	a = 0;
+	if (limiter == NULL)
+		return (0);
 	while (buf[a] && buf[a] != '\n' && limiter[a] && limiter[a] == buf[a])
 		a++;
 	if (long_nl(limiter, '\0') == long_nl(buf, '\n')
@@ -37,11 +41,11 @@ void	pi_processing_here(int	fd, char *dilemiter, t_env **env, bool *b)
 		{
 			buff = NULL;
 			buff = readline("> ");
-			if (buff == NULL && dilemiter[0] == '\0')
+			if (buff == NULL || dilemiter[0] == '\0')
 				break ;
 			if (str_cmp(buff, dilemiter) == 1)
 				break ;
-			if (b == false)
+			if (*b == false)
 				buff = join_arg(pi_processing_expand(buff, env, false));
 			write(fd, buff, long_nl(buff, '\n') + 1), write(fd, "\n", 1);
 			free(buff);
@@ -65,7 +69,7 @@ void	run_heredoc(char *arg, int i, t_tk **l)
 		j = i;
 		dilemter = get_dilemter(arg, &i, &logic);
 		if (!dilemter)
-			write(2, "allocation fail\n", 17), exit(2);
+			write(2, "allocation fail4444\n", 21), exit(2);
 		fd = open_here(dilemter, &(*l)->env, NULL, &logic);
 		if (fd == -1)
 			perror("OPEN: ");

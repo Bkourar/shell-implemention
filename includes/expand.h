@@ -72,7 +72,7 @@ typedef struct s_redirect
 
 char	*join_arg(char **spl);
 char	**pi_processing_expand(char *str, t_env **env, bool b);
-char	*pi_processing_redirect(char *in, t_env **env);
+char	*pi_processing_redirect(char *in, t_env **env, t_redir *d);
 char	**parse_value(t_exp **hd, t_env **env);
 char	*s_and_r(t_exp **lst, t_env **env);
 char	**mise_ajour_input(t_dir **lst);

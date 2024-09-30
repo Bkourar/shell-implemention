@@ -12,10 +12,10 @@ int	pi_processing_err_1(t_tk **f, t_tk **l, char *del)
 		return (synatx_error((*l)->token), synatx_error("9999"), 1);//here run just 
 	else if (check_op1((*l)->type) && !check_op1((*l)->pv->type)
 		&& !check_herepipe(f))
-		return (run_heredoc(del, 0, f), print_errors(), puts("hereee"), 1);//here run herdoc && error
+		return (run_heredoc(del, 0, f), print_errors(), puts("42"), 1);//here run herdoc && error
 	else if (check_op1((*l)->type) && !check_op1((*l)->pv->type) 
 		&& check_herepipe(f) != 0)
-		return (print_errors(), puts("here"), 1);// here run just error
+		return (print_errors(), puts("1337"), 1);// here run just error
 	t = (*f);
 	while (t->nx != NULL)
 	{

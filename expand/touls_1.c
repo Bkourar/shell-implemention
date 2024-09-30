@@ -20,7 +20,7 @@ char	*give_arg(t_env **env, t_exp *l, char ***in)
 char	*give_status(char *str)
 {
 	if (!ft_strcmp(str, "?"))
-		return (ft_strdup("statuz"));
+		return (ft_itoa(ft_hrb(0, 0)));
 	return (ft_strdup("$"));
 }
 
